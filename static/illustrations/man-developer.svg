@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <!-- Soft outer drop shadow -->
+    <filter id="clay-shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="4" dy="6" stdDeviation="6" flood-color="#1E1B3A" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Background solid circle -->
+  <circle cx="200" cy="200" r="170" fill="#E8E0F0" opacity="0.3"/>
+
+  <!-- Floating Data Node Bubbles (Claymorphic) -->
+  <g filter="url(#clay-shadow)">
+    <!-- Lavender Info Node -->
+    <rect x="50" y="80" width="80" height="38" rx="19" fill="#E8E0F0" />
+    <rect x="50" y="80" width="80" height="38" rx="19" fill="none" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="2"/>
+    <circle cx="69" cy="99" r="8" fill="#6366F1" />
+    <rect x="85" y="95" width="28" height="8" rx="4" fill="#6B6890" opacity="0.4"/>
+    
+    <!-- Mint Check Node -->
+    <rect x="280" y="80" width="80" height="38" rx="19" fill="#D1FAE5" />
+    <rect x="280" y="80" width="80" height="38" rx="19" fill="none" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="2"/>
+    <path d="M 298 99 l 4 4 l 10 -10" fill="none" stroke="#059669" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="318" y="95" width="26" height="8" rx="4" fill="#059669" opacity="0.4"/>
+  </g>
+
+  <!-- Developer / SRE Man Figure -->
+  <g filter="url(#clay-shadow)">
+    <!-- Torso (Solid Lavender-Indigo) -->
+    <path d="M110,340 C110,290 140,260 200,260 C260,260 290,290 290,340 Z" fill="#6366F1"/>
+    <!-- Torso inner reflection (white glare line) -->
+    <path d="M114,340 C114,293 144,264 200,264 C256,264 286,293 286,340" fill="none" stroke="#FFFFFF" stroke-opacity="0.4" stroke-width="4" stroke-linecap="round"/>
+
+    <!-- Neck (Solid Skin) -->
+    <rect x="186" y="224" width="28" height="42" rx="14" fill="#FED7AA"/>
+
+    <!-- Head (Solid Skin) -->
+    <rect x="150" y="120" width="100" height="110" rx="45" fill="#FED7AA"/>
+    <!-- Head inner reflection (white glare line) -->
+    <rect x="150" y="120" width="100" height="110" rx="45" fill="none" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="3"/>
+
+    <!-- Hair (Solid Charcoal) -->
+    <path d="M150,150 C145,130 160,105 200,105 C240,105 255,130 250,150 C240,140 230,145 220,135 C210,145 190,140 180,135 C170,145 160,140 150,150 Z" fill="#374151"/>
+
+    <!-- Headset Strap (Solid Mint) -->
+    <rect x="158" y="160" width="84" height="20" rx="10" fill="#10B981"/>
+    <!-- Glasses Lenses -->
+    <circle cx="178" cy="170" r="12" fill="#FFFFFF" fill-opacity="0.2" stroke="#FFFFFF" stroke-width="1.5"/>
+    <circle cx="222" cy="170" r="12" fill="#FFFFFF" fill-opacity="0.2" stroke="#FFFFFF" stroke-width="1.5"/>
+
+    <!-- Headset Ear Cushions -->
+    <rect x="142" y="150" width="12" height="40" rx="6" fill="#1F2937" />
+    <rect x="246" y="150" width="12" height="40" rx="6" fill="#1F2937" />
+    <!-- Headset Arc -->
+    <path d="M148,150 A52,52 0 0,1 252,150" fill="none" stroke="#1F2937" stroke-width="5" stroke-linecap="round"/>
+
+    <!-- Nose -->
+    <path d="M200,174 v8" fill="none" stroke="#FDBA74" stroke-width="3" stroke-linecap="round"/>
+
+    <!-- Friendly Smile -->
+    <path d="M192,196 Q200,204 208,196" fill="none" stroke="#E07A5F" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- Code / Terminal Bubble (Floating Screen) -->
+  <g filter="url(#clay-shadow)">
+    <rect x="230" y="210" width="120" height="72" rx="18" fill="#BAE6FD"/>
+    <rect x="230" y="210" width="120" height="72" rx="18" fill="none" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="3"/>
+    
+    <!-- Code Lines Mock -->
+    <rect x="246" y="226" width="30" height="6" rx="3" fill="#6366F1" opacity="0.6"/>
+    <rect x="246" y="238" width="60" height="6" rx="3" fill="#6B6890" opacity="0.4"/>
+    <rect x="246" y="250" width="45" height="6" rx="3" fill="#10B981" opacity="0.6"/>
+    
+    <!-- Sparkles on screen -->
+    <path d="M316,220 l2,4 l4,2 l-4,2 l-2,4 l-2-4 l-4-2 l4-2 Z" fill="#F59E0B"/>
+  </g>
+</svg>

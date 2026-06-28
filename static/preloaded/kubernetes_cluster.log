@@ -1,0 +1,17 @@
+2026-06-26T10:00:00.000Z INFO  [kube-scheduler] Successfully scheduled default/payment-processor-584fd7-9g4h8 to node-02
+2026-06-26T10:00:02.120Z INFO  [kubelet-node-02] Pulling image "payment-processor:v2.1.0"
+2026-06-26T10:00:10.450Z INFO  [kubelet-node-02] Successfully pulled image "payment-processor:v2.1.0" in 8.33s
+2026-06-26T10:00:11.900Z INFO  [kubelet-node-02] Created container payment-processor
+2026-06-26T10:00:12.100Z INFO  [kubelet-node-02] Started container payment-processor
+2026-06-26T10:00:25.000Z WARNING [kubelet-node-02] Liveness probe failed for container payment-processor: connection refused on port 8080
+2026-06-26T10:00:35.000Z WARNING [kubelet-node-02] Readiness probe failed for container payment-processor: HTTP probe returned status code 503
+2026-06-26T10:00:45.000Z INFO  [kube-controller-manager] Deployment default/payment-processor scaling replica set payment-processor-584fd7 to 3
+2026-06-26T10:01:05.120Z ERROR [coredns] Query failed: payment-processor.default.svc.cluster.local - DNS resolution timed out
+2026-06-26T10:01:20.456Z ERROR [kubelet-node-02] Container payment-processor failed liveness probe: restarting container
+2026-06-26T10:01:40.000Z WARNING [kubelet-node-02] Container payment-processor run out of limits - memory usage at 512Mi (limit: 512Mi)
+2026-06-26T10:01:41.220Z CRITICAL [kubelet-node-02] Pod payment-processor-584fd7-9g4h8 container payment-processor terminated: OOMKilled
+2026-06-26T10:01:50.000Z WARNING [kube-controller-manager] Pod payment-processor-584fd7-9g4h8 is restarting (Back-off 10s restarting failed container)
+2026-06-26T10:02:10.111Z ERROR [payment-processor] Startup failed: connection to database-pool.default.svc.cluster.local refused
+2026-06-26T10:02:11.345Z WARNING [kube-controller-manager] Pod payment-processor-584fd7-9g4h8 is in CrashLoopBackOff state
+2026-06-26T10:03:00.000Z CRITICAL [node-allocator] Node node-02 disk pressure detected - eviction threshold crossed
+2026-06-26T10:03:15.550Z WARNING [kubelet-node-02] Pod eviction started for default/payment-processor-584fd7-9g4h8

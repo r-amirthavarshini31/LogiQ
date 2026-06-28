@@ -1,0 +1,1050 @@
+{% extends "base.html" %}
+
+{% block title %}LogiQ — Log File Anomaly Explainer{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ─── Landing Page Specific Styles ─────────────────────────────── */
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    border-radius: var(--radius-pill);
+    background: var(--color-lavender);
+    color: var(--color-primary);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    margin-bottom: var(--space-lg);
+    box-shadow: var(--shadow-clay-small);
+    animation: fadeIn 0.5s ease forwards;
+}
+
+.hero-stats-bar {
+    display: flex;
+    gap: var(--space-xl);
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--color-border-soft);
+}
+
+.hero-stat {
+    text-align: center;
+}
+
+.hero-stat-value {
+    font-size: var(--font-size-2xl);
+    font-weight: 800;
+    color: var(--color-primary);
+}
+
+.hero-stat-label {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    margin-top: 2px;
+}
+
+/* ─── Trusted By Section ────────────────────────────────────────── */
+.trusted-section {
+    padding: var(--space-2xl) 0;
+    text-align: center;
+}
+
+.trusted-label {
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-lg);
+}
+
+.trusted-logos {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2xl);
+    flex-wrap: wrap;
+    opacity: 0.4;
+}
+
+.trusted-logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--color-text-muted);
+}
+
+/* ─── Demo Section ──────────────────────────────────────────────── */
+.demo-section {
+    padding: var(--space-3xl) 0;
+}
+
+.demo-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2xl);
+    align-items: center;
+}
+
+.demo-terminal {
+    background: #1a1625;
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    box-shadow: var(--shadow-clay-hover);
+    overflow: hidden;
+    position: relative;
+}
+
+.demo-terminal-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-md);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.demo-terminal-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.demo-terminal-dot.red { background: #FF5F56; }
+.demo-terminal-dot.yellow { background: #FFBD2E; }
+.demo-terminal-dot.green { background: #27C93F; }
+
+.demo-terminal-content {
+    font-family: 'Courier New', monospace;
+    font-size: var(--font-size-xs);
+    line-height: 1.8;
+    color: #e0def4;
+    white-space: pre-wrap;
+    max-height: 320px;
+    overflow: hidden;
+}
+
+.demo-terminal-content .log-time { color: #908caa; }
+.demo-terminal-content .log-info { color: #6EE7B7; }
+.demo-terminal-content .log-warn { color: #f6c177; }
+.demo-terminal-content .log-error { color: #eb6f92; }
+.demo-terminal-content .log-critical { color: #FF5F56; font-weight: 700; }
+
+.demo-text h2 {
+    margin-bottom: var(--space-md);
+}
+
+.demo-text p {
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--space-lg);
+}
+
+.demo-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+}
+
+.demo-feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+}
+
+.demo-feature-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-clay-small);
+}
+
+.demo-feature-text h4 {
+    font-size: var(--font-size-sm);
+    margin-bottom: 2px;
+}
+
+.demo-feature-text p {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .demo-container {
+        grid-template-columns: 1fr;
+    }
+    .hero-stats-bar {
+        flex-wrap: wrap;
+        gap: var(--space-lg);
+    }
+}
+
+/* ─── Use Cases Section ─────────────────────────────────────────── */
+.usecase-card {
+    text-align: left;
+    padding: var(--space-xl) var(--space-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+.usecase-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.usecase-card.uc-devops::before { background: linear-gradient(90deg, #6366F1, #8B5CF6); }
+.usecase-card.uc-sre::before { background: linear-gradient(90deg, #6EE7B7, #34D399); }
+.usecase-card.uc-security::before { background: linear-gradient(90deg, #FCA5A5, #F87171); }
+.usecase-card.uc-platform::before { background: linear-gradient(90deg, #BAE6FD, #38BDF8); }
+
+.usecase-icon-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-md);
+}
+
+.usecase-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-clay-small);
+}
+
+.usecase-card h3 {
+    font-size: var(--font-size-base);
+    margin-bottom: var(--space-sm);
+}
+
+.usecase-card p {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+}
+
+/* ─── CTA Section ───────────────────────────────────────────────── */
+.cta-section {
+    padding: var(--space-3xl) 0;
+}
+
+.cta-card {
+    text-align: center;
+    padding: var(--space-3xl) var(--space-2xl);
+    background: linear-gradient(135deg, var(--color-primary) 0%, #8B5CF6 50%, #A78BFA 100%);
+    border-radius: var(--radius-xl);
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 50%, rgba(255,255,255,0.15) 0%, transparent 60%),
+                radial-gradient(circle at 80% 50%, rgba(255,255,255,0.1) 0%, transparent 60%);
+}
+
+.cta-card h2 {
+    color: white;
+    font-size: var(--font-size-3xl);
+    margin-bottom: var(--space-md);
+    position: relative;
+    z-index: 1;
+}
+
+.cta-card p {
+    color: rgba(255,255,255,0.85);
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--space-xl);
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    z-index: 1;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-md);
+    position: relative;
+    z-index: 1;
+    flex-wrap: wrap;
+}
+
+.cta-btn-white {
+    background: white;
+    color: var(--color-primary);
+    padding: 14px 32px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    transition: all var(--transition-spring);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    text-decoration: none;
+}
+
+.cta-btn-white:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    color: var(--color-primary-dark);
+}
+
+.cta-btn-outline-white {
+    background: transparent;
+    color: white;
+    padding: 14px 32px;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    border: 2px solid rgba(255,255,255,0.4);
+    transition: all var(--transition-spring);
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    text-decoration: none;
+}
+
+.cta-btn-outline-white:hover {
+    background: rgba(255,255,255,0.1);
+    border-color: white;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* ─── Tech Stack ─────────────────────────────────────────────────── */
+.tech-grid {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+    margin-top: var(--space-xl);
+}
+
+.tech-badge {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: 10px 20px;
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-clay-small);
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    transition: all var(--transition-base);
+}
+
+.tech-badge:hover {
+    box-shadow: var(--shadow-clay-hover);
+    transform: translateY(-2px);
+    color: var(--color-primary);
+}
+
+/* ─── Footer Enhanced ────────────────────────────────────────────── */
+.footer-enhanced {
+    padding: var(--space-3xl) 0 var(--space-xl);
+    border-top: 1px solid var(--color-border-soft);
+    margin-top: 0;
+}
+
+.footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: var(--space-2xl);
+    margin-bottom: var(--space-2xl);
+}
+
+.footer-brand p {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    margin-top: var(--space-sm);
+    line-height: 1.6;
+    max-width: 280px;
+}
+
+.footer-col-title {
+    font-weight: 700;
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-md);
+    color: var(--color-text);
+}
+
+.footer-col-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.footer-col-links a {
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    transition: color var(--transition-fast);
+}
+
+.footer-col-links a:hover {
+    color: var(--color-primary);
+}
+
+.footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--space-lg);
+    border-top: 1px solid var(--color-border-soft);
+    flex-wrap: wrap;
+    gap: var(--space-md);
+}
+
+.footer-bottom p {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+}
+
+.footer-social {
+    display: flex;
+    gap: var(--space-md);
+}
+
+.footer-social a {
+    color: var(--color-text-muted);
+    transition: color var(--transition-fast);
+}
+
+.footer-social a:hover {
+    color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+    .footer-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ─── System Architecture styles ────────────────────────────────── */
+.arch-container {
+    background: var(--color-surface);
+    border-radius: var(--radius-lg);
+    padding: var(--space-2xl);
+    box-shadow: var(--shadow-clay);
+    border: 1px solid var(--color-border-soft);
+    margin-top: var(--space-2xl);
+}
+.arch-flow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+    margin-top: var(--space-xl);
+}
+.arch-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+    min-width: 140px;
+    padding: var(--space-md);
+    border-radius: var(--radius-md);
+    background: var(--color-bg);
+    box-shadow: var(--shadow-clay-small);
+    position: relative;
+    z-index: 2;
+    transition: all var(--transition-base);
+}
+.arch-node:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-clay);
+}
+.arch-node-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-sm);
+    box-shadow: var(--shadow-clay-small);
+}
+.arch-node-title {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+.arch-node-desc {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+}
+.arch-arrow {
+    flex-shrink: 0;
+    color: var(--color-primary-light);
+    animation: pulse 2s infinite;
+}
+@media (max-width: 768px) {
+    .arch-flow {
+        flex-direction: column;
+    }
+    .arch-arrow {
+        transform: rotate(90deg);
+    }
+}
+
+/* ─── Testimonials styles ───────────────────────────────────────── */
+.testimonial-card {
+    text-align: left;
+    padding: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+.testimonial-quote {
+    font-style: italic;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-lg);
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+}
+.testimonial-quote::before {
+    content: '“';
+    font-size: 4rem;
+    color: var(--color-primary-glow);
+    position: absolute;
+    top: -24px;
+    left: -8px;
+    font-family: serif;
+    z-index: -1;
+}
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    border-top: 1px solid var(--color-border-soft);
+    padding-top: var(--space-md);
+}
+.testimonial-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--color-lavender);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: var(--color-primary);
+    box-shadow: var(--shadow-clay-small);
+}
+.testimonial-info h4 {
+    font-size: var(--font-size-sm);
+    margin: 0;
+}
+.testimonial-info p {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    margin: 0;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero" id="hero-section">
+    <div class="container">
+        <div class="hero-content">
+            <div class="hero-text">
+                <div class="hero-badge">
+                    <i data-lucide="sparkles" width="14" height="14"></i>
+                    AI-Powered Log Analysis
+                </div>
+                <h1 class="hero-title">
+                    From <span class="text-gradient">chaos</span> to clarity — in seconds.
+                </h1>
+                <p class="hero-tagline">
+                    LogiQ detects anomalies in your log files, explains them with AI,
+                    and suggests self-healing actions — so you can fix issues before they become outages.
+                </p>
+                <div class="flex gap-md" style="flex-wrap: wrap;">
+                    <a href="/upload" class="clay-btn clay-btn-primary clay-btn-lg" id="cta-analyze">
+                        <i data-lucide="search" width="20" height="20"></i>
+                        Analyze Your Logs
+                    </a>
+                    <a href="/upload" class="clay-btn clay-btn-outline clay-btn-lg" id="cta-try-demo">
+                        <i data-lucide="play" width="20" height="20"></i>
+                        Try Demo Data
+                    </a>
+                </div>
+                <div class="hero-stats-bar animate-fade-in delay-3">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">6+</div>
+                        <div class="hero-stat-label">Log Formats</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">7</div>
+                        <div class="hero-stat-label">Categories</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">3</div>
+                        <div class="hero-stat-label">AI Engines</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">&lt;1s</div>
+                        <div class="hero-stat-label">Detection Time</div>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-illustration">
+                <img src="{{ url_for('static', filename='illustrations/dashboard-hub.svg') }}" alt="Dashboard hub illustration" width="400" height="400">
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Trusted By -->
+<section class="trusted-section">
+    <div class="container">
+        <p class="trusted-label">Trusted by teams using</p>
+        <div class="trusted-logos">
+            <span class="trusted-logo"><i data-lucide="server" width="20" height="20"></i> Nginx</span>
+            <span class="trusted-logo"><i data-lucide="database" width="20" height="20"></i> PostgreSQL</span>
+            <span class="trusted-logo"><i data-lucide="container" width="20" height="20"></i> Docker</span>
+            <span class="trusted-logo"><i data-lucide="cloud" width="20" height="20"></i> AWS</span>
+            <span class="trusted-logo"><i data-lucide="git-branch" width="20" height="20"></i> GitHub</span>
+            <span class="trusted-logo"><i data-lucide="layers" width="20" height="20"></i> Kubernetes</span>
+        </div>
+    </div>
+</section>
+
+<!-- Feature Highlights -->
+<section class="section" id="features-section">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: var(--space-2xl);">
+            <h2 class="animate-fade-in">Everything you need to tame your logs</h2>
+            <p class="animate-fade-in delay-1" style="color: var(--color-text-secondary); margin-top: var(--space-sm); max-width: 500px; margin-left: auto; margin-right: auto;">
+                Three powerful capabilities working together to give you complete log observability
+            </p>
+        </div>
+        <div class="grid grid-3">
+            <div class="clay-card feature-card animate-slide-up delay-1" id="feature-detection">
+                <div class="feature-icon lavender">
+                    <i data-lucide="scan-search" width="28" height="28"></i>
+                </div>
+                <h3>Instant Detection</h3>
+                <p>Upload your log files and get anomalies detected in seconds using intelligent pattern matching and frequency spike analysis.</p>
+            </div>
+            <div class="clay-card feature-card animate-slide-up delay-2" id="feature-explanations">
+                <div class="feature-icon mint">
+                    <i data-lucide="brain" width="28" height="28"></i>
+                </div>
+                <h3>AI Explanations</h3>
+                <p>Get clear, actionable explanations for every anomaly — powered by AI with a local cache to save time and cost on repeat issues.</p>
+            </div>
+            <div class="clay-card feature-card animate-slide-up delay-3" id="feature-healing">
+                <div class="feature-icon peach">
+                    <i data-lucide="wrench" width="28" height="28"></i>
+                </div>
+                <h3>Self-Healing Actions</h3>
+                <p>Generate runbooks, create GitHub PRs with fix patches, and send alerts to Slack or Discord — all from a single dashboard.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Live Demo / Terminal Section -->
+<section class="demo-section" id="demo-section">
+    <div class="container">
+        <div class="demo-container">
+            <div class="demo-terminal animate-slide-up delay-1">
+                <div class="demo-terminal-bar">
+                    <span class="demo-terminal-dot red"></span>
+                    <span class="demo-terminal-dot yellow"></span>
+                    <span class="demo-terminal-dot green"></span>
+                </div>
+                <div class="demo-terminal-content" id="demo-log-output"><span class="log-time">2024-03-15 08:23:01</span> <span class="log-info">[INFO]</span>    Application started successfully
+<span class="log-time">2024-03-15 08:23:03</span> <span class="log-info">[INFO]</span>    Connected to PostgreSQL at db.prod:5432
+<span class="log-time">2024-03-15 08:24:30</span> <span class="log-warn">[WARNING]</span> Heap usage at 78% - approaching threshold
+<span class="log-time">2024-03-15 08:26:00</span> <span class="log-error">[ERROR]</span>   Connection refused to replica db-replica-02
+<span class="log-time">2024-03-15 08:26:01</span> <span class="log-error">[ERROR]</span>   Query timeout after 30000ms: SELECT * FROM orders
+<span class="log-time">2024-03-15 08:26:30</span> <span class="log-error">[ERROR]</span>   JWT signature verification failed for admin
+<span class="log-time">2024-03-15 08:27:00</span> <span class="log-critical">[CRITICAL]</span> Out of memory: Java heap space
+<span class="log-time">2024-03-15 08:27:45</span> <span class="log-error">[ERROR]</span>   Connection reset by peer: payment-gateway
+<span class="log-time">2024-03-15 08:28:00</span> <span class="log-error">[ERROR]</span>   SSL handshake failed - certificate expired
+<span class="log-time">2024-03-15 08:30:00</span> <span class="log-critical">[CRITICAL]</span> Database deadlock on table 'transactions'</div>
+            </div>
+            <div class="demo-text animate-slide-up delay-2">
+                <h2>See it in action</h2>
+                <p>LogiQ parses real-world log formats, detects anomalies across 7 categories, and provides instant AI-powered explanations with actionable fixes.</p>
+                <ul class="demo-features">
+                    <li class="demo-feature-item">
+                        <div class="demo-feature-icon" style="background: var(--color-lavender); color: var(--color-primary);">
+                            <i data-lucide="file-search" width="18" height="18"></i>
+                        </div>
+                        <div class="demo-feature-text">
+                            <h4>Multi-Format Parsing</h4>
+                            <p>Syslog, Apache, Nginx, JSON, and generic timestamped logs</p>
+                        </div>
+                    </li>
+                    <li class="demo-feature-item">
+                        <div class="demo-feature-icon" style="background: var(--color-mint); color: var(--color-success-dark);">
+                            <i data-lucide="zap" width="18" height="18"></i>
+                        </div>
+                        <div class="demo-feature-text">
+                            <h4>Smart Caching</h4>
+                            <p>SQLite cache prevents duplicate API calls, saving time and cost</p>
+                        </div>
+                    </li>
+                    <li class="demo-feature-item">
+                        <div class="demo-feature-icon" style="background: var(--color-peach); color: var(--color-error-dark);">
+                            <i data-lucide="bell-ring" width="18" height="18"></i>
+                        </div>
+                        <div class="demo-feature-text">
+                            <h4>Instant Alerts</h4>
+                            <p>Push to Slack, Discord, or trigger GitHub PRs automatically</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="section" id="how-it-works">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: var(--space-2xl);">
+            <h2 class="animate-fade-in">How It Works</h2>
+            <p class="animate-fade-in delay-1" style="color: var(--color-text-secondary); margin-top: var(--space-sm);">
+                Four simple steps to go from raw logs to resolved issues
+            </p>
+        </div>
+
+        <div class="stepper">
+            <div class="stepper-step animate-slide-up delay-1">
+                <div class="stepper-icon">
+                    <i data-lucide="upload" width="28" height="28"></i>
+                    <span class="stepper-number">1</span>
+                </div>
+                <div class="stepper-connector"></div>
+                <div class="stepper-label">Upload</div>
+                <div class="stepper-desc">Drop your .log, .txt, or .csv file into the upload zone</div>
+            </div>
+            <div class="stepper-step animate-slide-up delay-2">
+                <div class="stepper-icon">
+                    <i data-lucide="radar" width="28" height="28"></i>
+                    <span class="stepper-number">2</span>
+                </div>
+                <div class="stepper-connector"></div>
+                <div class="stepper-label">Detect</div>
+                <div class="stepper-desc">Anomalies are identified using pattern matching and spike analysis</div>
+            </div>
+            <div class="stepper-step animate-slide-up delay-3">
+                <div class="stepper-icon">
+                    <i data-lucide="lightbulb" width="28" height="28"></i>
+                    <span class="stepper-number">3</span>
+                </div>
+                <div class="stepper-connector"></div>
+                <div class="stepper-label">Explain</div>
+                <div class="stepper-desc">AI generates clear explanations and suggested fixes for each anomaly</div>
+            </div>
+            <div class="stepper-step animate-slide-up delay-4">
+                <div class="stepper-icon">
+                    <i data-lucide="shield-check" width="28" height="28"></i>
+                    <span class="stepper-number">4</span>
+                </div>
+                <div class="stepper-label">Remediate</div>
+                <div class="stepper-desc">Generate runbooks, create PRs, send alerts, and resolve issues</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- System Pipeline Architecture Section -->
+<section class="section bg-light" id="arch-section" style="background: rgba(0,0,0,0.01);">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: var(--space-2xl);">
+            <h2 class="animate-fade-in">LogiQ Ingestion Pipeline</h2>
+            <p class="animate-fade-in delay-1" style="color: var(--color-text-secondary); margin-top: var(--space-sm); max-width: 600px; margin-left: auto; margin-right: auto;">
+                High-performance architecture built for instant telemetry analysis, local SQLite caching, and self-healing deployment workflows.
+            </p>
+        </div>
+
+        <div class="arch-container animate-slide-up delay-2">
+            <div class="arch-flow">
+                <!-- Node 1 -->
+                <div class="arch-node">
+                    <div class="arch-node-icon" style="background: var(--color-sky); color: var(--color-warning-dark);">
+                        <i data-lucide="file-text" width="22" height="22"></i>
+                    </div>
+                    <div class="arch-node-title">1. Log Ingestion</div>
+                    <div class="arch-node-desc">Log, TXT, CSV drop zones</div>
+                </div>
+
+                <i data-lucide="chevrons-right" class="arch-arrow" width="24" height="24"></i>
+
+                <!-- Node 2 -->
+                <div class="arch-node">
+                    <div class="arch-node-icon" style="background: var(--color-lavender); color: var(--color-primary);">
+                        <i data-lucide="binary" width="22" height="22"></i>
+                    </div>
+                    <div class="arch-node-title">2. Lexical Parsing</div>
+                    <div class="arch-node-desc">Standard structure alignment</div>
+                </div>
+
+                <i data-lucide="chevrons-right" class="arch-arrow" width="24" height="24"></i>
+
+                <!-- Node 3 -->
+                <div class="arch-node">
+                    <div class="arch-node-icon" style="background: var(--color-peach); color: var(--color-error-dark);">
+                        <i data-lucide="activity" width="22" height="22"></i>
+                    </div>
+                    <div class="arch-node-title">3. Anomaly Engine</div>
+                    <div class="arch-node-desc">Rule & frequency checks</div>
+                </div>
+
+                <i data-lucide="chevrons-right" class="arch-arrow" width="24" height="24"></i>
+
+                <!-- Node 4 -->
+                <div class="arch-node">
+                    <div class="arch-node-icon" style="background: var(--color-mint); color: var(--color-success-dark);">
+                        <i data-lucide="cpu" width="22" height="22"></i>
+                    </div>
+                    <div class="arch-node-title">4. Caching & LLM</div>
+                    <div class="arch-node-desc">AI diagnostic synthesis</div>
+                </div>
+
+                <i data-lucide="chevrons-right" class="arch-arrow" width="24" height="24"></i>
+
+                <!-- Node 5 -->
+                <div class="arch-node">
+                    <div class="arch-node-icon" style="background: var(--color-cream); color: #B45309;">
+                        <i data-lucide="terminal" width="22" height="22"></i>
+                    </div>
+                    <div class="arch-node-title">5. Auto-Remediation</div>
+                    <div class="arch-node-desc">Slack, Discord, Git PRs</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Client Testimonials -->
+<section class="section" id="testimonials-section">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: var(--space-2xl);">
+            <h2 class="animate-fade-in">What SREs are saying</h2>
+            <p class="animate-fade-in delay-1" style="color: var(--color-text-secondary); margin-top: var(--space-sm);">
+                Real impact from production infrastructure teams
+            </p>
+        </div>
+
+        <div class="grid grid-3">
+            <!-- Testimonial 1 -->
+            <div class="clay-card testimonial-card animate-slide-up delay-1">
+                <p class="testimonial-quote">
+                    LogiQ changed how we handle system outages. In less than 15 seconds, we parsed 10,000 lines of container logs, spotted a Redis socket deadlock, and drafted a patch. It reduced our MTTR by nearly 75%!
+                </p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">SM</div>
+                    <div class="testimonial-info">
+                        <h4>Sarah Jenkins</h4>
+                        <p>Director of SRE, StackCorp</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 2 -->
+            <div class="clay-card testimonial-card animate-slide-up delay-2">
+                <p class="testimonial-quote">
+                    The local SQLite cache feature is absolute genius. It completely avoids repeating costly API calls to OpenAI for duplicate log warnings. The Claymorphic UI is super friendly and interactive.
+                </p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">MK</div>
+                    <div class="testimonial-info">
+                        <h4>Marcus Kael</h4>
+                        <p>Lead Platform Engineer, CloudScale</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Testimonial 3 -->
+            <div class="clay-card testimonial-card animate-slide-up delay-3">
+                <p class="testimonial-quote">
+                    Integrating alert notifications directly with Slack and auto-creating GitHub pull requests for self-healing actions makes this the most actionable tool in our monitoring dashboard. Highly recommended.
+                </p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">TH</div>
+                    <div class="testimonial-info">
+                        <h4>Tariq Hussain</h4>
+                        <p>Security Auditor, SafeNet Ltd</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Use Cases -->
+<section class="section" id="usecases-section">
+    <div class="container">
+        <div style="text-align: center; margin-bottom: var(--space-2xl);">
+            <h2 class="animate-fade-in">Built for every team</h2>
+            <p class="animate-fade-in delay-1" style="color: var(--color-text-secondary); margin-top: var(--space-sm);">
+                Whether you are a solo developer or an enterprise SRE team
+            </p>
+        </div>
+        <div class="grid grid-4">
+            <div class="clay-card usecase-card uc-devops animate-slide-up delay-1" id="uc-devops">
+                <div class="usecase-icon-row">
+                    <div class="usecase-icon" style="background: var(--color-lavender); color: var(--color-primary);">
+                        <i data-lucide="terminal" width="20" height="20"></i>
+                    </div>
+                </div>
+                <h3>DevOps Engineers</h3>
+                <p>Monitor CI/CD pipeline logs, detect build failures, and auto-generate runbooks for incident response.</p>
+            </div>
+            <div class="clay-card usecase-card uc-sre animate-slide-up delay-2" id="uc-sre">
+                <div class="usecase-icon-row">
+                    <div class="usecase-icon" style="background: var(--color-mint); color: var(--color-success-dark);">
+                        <i data-lucide="activity" width="20" height="20"></i>
+                    </div>
+                </div>
+                <h3>SRE Teams</h3>
+                <p>Reduce MTTR with AI-powered root cause analysis and automated self-healing workflows.</p>
+            </div>
+            <div class="clay-card usecase-card uc-security animate-slide-up delay-3" id="uc-security">
+                <div class="usecase-icon-row">
+                    <div class="usecase-icon" style="background: var(--color-peach); color: var(--color-error-dark);">
+                        <i data-lucide="shield" width="20" height="20"></i>
+                    </div>
+                </div>
+                <h3>Security Teams</h3>
+                <p>Detect authentication failures, unauthorized access attempts, and SQL injection patterns in real time.</p>
+            </div>
+            <div class="clay-card usecase-card uc-platform animate-slide-up delay-4" id="uc-platform">
+                <div class="usecase-icon-row">
+                    <div class="usecase-icon" style="background: var(--color-sky); color: var(--color-warning-dark);">
+                        <i data-lucide="boxes" width="20" height="20"></i>
+                    </div>
+                </div>
+                <h3>Platform Engineers</h3>
+                <p>Analyze Kubernetes, Docker, and cloud service logs to optimize infrastructure reliability.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Tech Stack -->
+<section class="section" id="tech-section">
+    <div class="container" style="text-align: center;">
+        <h2 class="animate-fade-in">Powered by modern technology</h2>
+        <p class="animate-fade-in delay-1" style="color: var(--color-text-secondary); margin-top: var(--space-sm); margin-bottom: var(--space-xl);">
+            Built with tools developers already know and love
+        </p>
+        <div class="tech-grid">
+            <span class="tech-badge"><i data-lucide="flask-conical" width="16" height="16"></i> Flask</span>
+            <span class="tech-badge"><i data-lucide="database" width="16" height="16"></i> SQLite</span>
+            <span class="tech-badge"><i data-lucide="brain" width="16" height="16"></i> OpenAI</span>
+            <span class="tech-badge"><i data-lucide="bar-chart-3" width="16" height="16"></i> Chart.js</span>
+            <span class="tech-badge"><i data-lucide="code" width="16" height="16"></i> Vanilla JS</span>
+            <span class="tech-badge"><i data-lucide="git-pull-request" width="16" height="16"></i> GitHub API</span>
+            <span class="tech-badge"><i data-lucide="message-square" width="16" height="16"></i> Slack & Discord</span>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section" id="cta-section">
+    <div class="container">
+        <div class="cta-card">
+            <h2>Ready to analyze your logs?</h2>
+            <p>Upload a log file and get instant anomaly detection, AI explanations, and self-healing suggestions.</p>
+            <div class="cta-buttons">
+                <a href="/upload" class="cta-btn-white">
+                    <i data-lucide="upload-cloud" width="20" height="20"></i>
+                    Upload a Log File
+                </a>
+                <a href="/dashboard" class="cta-btn-outline-white">
+                    <i data-lucide="layout-dashboard" width="20" height="20"></i>
+                    View Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Enhanced Footer -->
+<footer class="footer-enhanced">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="footer-logo" style="font-size: var(--font-size-xl);">
+                    Logi<span class="logo-q">Q</span>
+                </div>
+                <p>From chaos to clarity, in seconds. An AI-powered log analysis and self-healing platform built for modern development teams.</p>
+            </div>
+            <div>
+                <h4 class="footer-col-title">Product</h4>
+                <ul class="footer-col-links">
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/upload">Upload</a></li>
+                    <li><a href="/history">History</a></li>
+                    <li><a href="/docs">Documentation</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-col-title">Integrations</h4>
+                <ul class="footer-col-links">
+                    <li><a href="/settings">OpenAI</a></li>
+                    <li><a href="/settings">Ollama</a></li>
+                    <li><a href="/settings">Slack</a></li>
+                    <li><a href="/settings">GitHub</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="footer-col-title">Resources</h4>
+                <ul class="footer-col-links">
+                    <li><a href="/docs">Getting Started</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/settings">Settings</a></li>
+                    <li><a href="/profile">Profile</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Built for developers, by developers.</p>
+            <div class="footer-social">
+                <a href="#" aria-label="GitHub"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.2 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg></a>
+                <a href="#" aria-label="Twitter"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg></a>
+                <a href="#" aria-label="Globe"><i data-lucide="globe" width="18" height="18"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+{% endblock %}

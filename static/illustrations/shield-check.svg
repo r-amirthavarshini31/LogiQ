@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 280" fill="none">
+  <!-- Shadow -->
+  <ellipse cx="140" cy="260" rx="80" ry="14" fill="#D1FAE5" opacity="0.4"/>
+  
+  <!-- Shield body -->
+  <path d="M140 30 L220 70 Q224 72 224 76 L224 150 Q224 200 140 252 Q56 200 56 150 L56 76 Q56 72 60 70 Z" fill="#D1FAE5" stroke="#6EE7B7" stroke-width="2.5"/>
+  <!-- Inner glow -->
+  <path d="M140 38 L214 74 L214 150 Q214 194 140 244 Q66 194 66 150 L66 74 Z" fill="none" stroke="white" stroke-width="3" opacity="0.5"/>
+  
+  <!-- Shield gradient overlay -->
+  <path d="M140 30 L220 70 Q224 72 224 76 L224 150 Q224 200 140 252 Q56 200 56 150 L56 76 Q56 72 60 70 Z" fill="url(#shieldGrad)" opacity="0.4"/>
+  
+  <!-- Inner shield area -->
+  <path d="M140 54 L200 84 L200 150 Q200 188 140 228 Q80 188 80 150 L80 84 Z" fill="#ECFDF5" stroke="#A7F3D0" stroke-width="1.5" opacity="0.6"/>
+  
+  <!-- Checkmark -->
+  <g transform="translate(140, 145)">
+    <!-- Check circle background -->
+    <circle cx="0" cy="0" r="38" fill="#6EE7B7" opacity="0.3"/>
+    <circle cx="0" cy="0" r="32" fill="#A7F3D0" opacity="0.4"/>
+    
+    <!-- Check mark -->
+    <path d="M-20 2 L-8 16 L22 -16" stroke="#059669" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <!-- Check highlight -->
+    <path d="M-18 0 L-7 13 L20 -14" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none" opacity="0.4"/>
+  </g>
+  
+  <!-- Sparkles -->
+  <g fill="#6EE7B7" opacity="0.6">
+    <circle cx="42" cy="60" r="3"/>
+    <circle cx="238" cy="65" r="2.5"/>
+    <circle cx="35" cy="180" r="2"/>
+    <circle cx="245" cy="175" r="3"/>
+  </g>
+  
+  <!-- Star accents -->
+  <g fill="#6366F1" opacity="0.4">
+    <circle cx="50" cy="120" r="2"/>
+    <circle cx="230" cy="125" r="2.5"/>
+    <circle cx="140" cy="20" r="2"/>
+  </g>
+  
+  <defs>
+    <linearGradient id="shieldGrad" x1="56" y1="30" x2="224" y2="252" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="white" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#6EE7B7" stop-opacity="0.2"/>
+    </linearGradient>
+  </defs>
+</svg>

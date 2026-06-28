@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="LogiQ — Log File Anomaly Explainer with Self-Healing. From chaos to clarity, in seconds.">
+    <meta name="keywords" content="log analysis, anomaly detection, self-healing, devops, monitoring">
+    <meta name="author" content="LogiQ">
+    
+    <title>{% block title %}LogiQ{% endblock %} — From chaos to clarity</title>
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%236366F1'/%3E%3Ctext x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui' font-weight='800' font-size='20' fill='white'%3EQ%3C/text%3E%3Ccircle cx='22' cy='22' r='7' fill='none' stroke='white' stroke-width='2' opacity='0.6'/%3E%3Cline x1='27' y1='27' x2='30' y2='30' stroke='white' stroke-width='2' stroke-linecap='round' opacity='0.6'/%3E%3C/svg%3E">
+
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/components.css') }}">
+    {% block extra_css %}{% endblock %}
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar" id="main-navbar">
+        <div class="navbar-inner">
+            <a href="/" class="navbar-logo" id="nav-logo">
+                Logi<span class="logo-q">Q</span>
+            </a>
+
+            <button class="navbar-menu-btn" id="nav-menu-btn" aria-label="Toggle menu">
+                <i data-lucide="menu" width="24" height="24"></i>
+            </button>
+
+            <ul class="navbar-links" id="nav-links">
+                <li><a href="/dashboard" class="navbar-link {% if request.path == '/dashboard' %}active{% endif %}" id="nav-dashboard">
+                    <i data-lucide="layout-dashboard" width="18" height="18"></i>
+                    <span>Dashboard</span>
+                </a></li>
+                <li><a href="/upload" class="navbar-link {% if request.path == '/upload' %}active{% endif %}" id="nav-upload">
+                    <i data-lucide="upload-cloud" width="18" height="18"></i>
+                    <span>Upload</span>
+                </a></li>
+                <li><a href="/history" class="navbar-link {% if request.path == '/history' %}active{% endif %}" id="nav-history">
+                    <i data-lucide="clock" width="18" height="18"></i>
+                    <span>History</span>
+                </a></li>
+                <li><a href="/settings" class="navbar-link {% if request.path == '/settings' %}active{% endif %}" id="nav-settings">
+                    <i data-lucide="settings" width="18" height="18"></i>
+                    <span>Settings</span>
+                </a></li>
+            </ul>
+
+            <div class="navbar-actions">
+                <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
+                    <i data-lucide="moon" width="18" height="18" id="theme-icon"></i>
+                </button>
+                <a href="/profile" class="navbar-avatar" id="nav-avatar" style="text-decoration: none; display: flex; align-items: center; justify-content: center; font-weight: bold;">D</a>
+                <a href="/login" class="clay-btn clay-btn-sm clay-btn-primary" id="nav-auth-btn" style="padding: 6px 14px; border-radius: 8px; font-size: var(--font-size-xs);">Login</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="animate-fade-in">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Drawer Overlay -->
+    <div class="drawer-overlay" id="drawer-overlay"></div>
+
+    <!-- Drawer Panel -->
+    <div class="drawer" id="anomaly-drawer">
+        <div class="drawer-header">
+            <h2 class="drawer-title">Anomaly Details</h2>
+            <button class="drawer-close" id="drawer-close">
+                <i data-lucide="x" width="20" height="20"></i>
+            </button>
+        </div>
+        <div class="drawer-body" id="drawer-body">
+            <!-- Populated by drawer.js -->
+        </div>
+        <div class="drawer-actions" id="drawer-actions">
+            <!-- Populated by drawer.js -->
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        /**
+         * Global utility functions used across all pages.
+         * @namespace LogiQ
+         */
+        const LogiQ = {
+            /** API base URL */
+            API_BASE: '',
+
+            /**
+             * Show a toast notification.
+             * @param {string} title - Toast title
+             * @param {string} message - Toast message
+             * @param {string} type - Toast type: 'success', 'error', 'warning', 'info'
+             */
+            showToast(title, message, type = 'info') {
+                const container = document.getElementById('toast-container');
+                const iconMap = {
+                    success: 'check-circle',
+                    error: 'alert-circle',
+                    warning: 'alert-triangle',
+                    info: 'info',
+                };
+
+                const toast = document.createElement('div');
+                toast.className = `toast toast-${type}`;
+                toast.innerHTML = `
+                    <i data-lucide="${iconMap[type] || 'info'}" class="toast-icon" width="20" height="20"></i>
+                    <div class="toast-content">
+                        <div class="toast-title">${title}</div>
+                        <div class="toast-message">${message}</div>
+                    </div>
+                    <button class="toast-close" aria-label="Close">
+                        <i data-lucide="x" width="16" height="16"></i>
+                    </button>
+                `;
+
+                container.appendChild(toast);
+                lucide.createIcons({ nodes: [toast] });
+
+                /* Close button */
+                toast.querySelector('.toast-close').addEventListener('click', () => {
+                    toast.classList.add('toast-exit');
+                    setTimeout(() => toast.remove(), 300);
+                });
+
+                /* Auto-dismiss after 4 seconds */
+                setTimeout(() => {
+                    if (toast.parentNode) {
+                        toast.classList.add('toast-exit');
+                        setTimeout(() => toast.remove(), 300);
+                    }
+                }, 4000);
+            },
+
+            /**
+             * Make a fetch API call with error handling.
+             * @param {string} url - API endpoint URL
+             * @param {object} options - Fetch options
+             * @returns {Promise<object>} Response data
+             */
+            async apiCall(url, options = {}) {
+                try {
+                    const response = await fetch(`${this.API_BASE}${url}`, {
+                        headers: { 'Content-Type': 'application/json', ...options.headers },
+                        ...options,
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.error || `Request failed with status ${response.status}`);
+                    }
+
+                    return data;
+                } catch (error) {
+                    console.error(`API Error [${url}]:`, error);
+                    throw error;
+                }
+            },
+
+            /**
+             * Format a timestamp for display.
+             * @param {string} timestamp - ISO 8601 timestamp
+             * @returns {string} Formatted timestamp
+             */
+            formatTimestamp(timestamp) {
+                if (!timestamp) return 'N/A';
+                try {
+                    const date = new Date(timestamp);
+                    return date.toLocaleString('en-US', {
+                        month: 'short',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                    });
+                } catch {
+                    return timestamp;
+                }
+            },
+
+            /**
+             * Store data in sessionStorage.
+             * @param {string} key - Storage key
+             * @param {*} value - Value to store
+             */
+            store(key, value) {
+                sessionStorage.setItem(`logiq_${key}`, JSON.stringify(value));
+            },
+
+            /**
+             * Retrieve data from sessionStorage.
+             * @param {string} key - Storage key
+             * @returns {*} Stored value or null
+             */
+            retrieve(key) {
+                const val = sessionStorage.getItem(`logiq_${key}`);
+                return val ? JSON.parse(val) : null;
+            },
+
+            /**
+             * Render basic Markdown to HTML.
+             * @param {string} md - Markdown content
+             * @returns {string} HTML string
+             */
+            renderMarkdown(md) {
+                if (!md) return '';
+                return md
+                    .replace(/^### (.*$)/gm, '<h3>$1</h3>')
+                    .replace(/^## (.*$)/gm, '<h2>$1</h2>')
+                    .replace(/^# (.*$)/gm, '<h1>$1</h1>')
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                    .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+                    .replace(/`(.*?)`/g, '<code>$1</code>')
+                    .replace(/^- \[ \] (.*$)/gm, '<li style="list-style:none">☐ $1</li>')
+                    .replace(/^- \[x\] (.*$)/gm, '<li style="list-style:none">☑ $1</li>')
+                    .replace(/^\d+\. (.*$)/gm, '<li>$1</li>')
+                    .replace(/^- (.*$)/gm, '<li>$1</li>')
+                    .replace(/^\|(.*)\|$/gm, (match) => {
+                        const cells = match.split('|').filter(c => c.trim());
+                        if (cells.every(c => /^[\s-]+$/.test(c))) return '';
+                        const tag = 'td';
+                        return '<tr>' + cells.map(c => `<${tag}>${c.trim()}</${tag}>`).join('') + '</tr>';
+                    })
+                    .replace(/^---$/gm, '<hr>')
+                    .replace(/\n\n/g, '</p><p>')
+                    .replace(/\n/g, '<br>');
+            },
+        };
+
+        /* ── Theme Toggle ─────────────────────────────────────────────── */
+        (function initTheme() {
+            const saved = localStorage.getItem('logiq_theme') || 'light';
+            document.documentElement.setAttribute('data-theme', saved);
+
+            document.getElementById('theme-toggle').addEventListener('click', () => {
+                const current = document.documentElement.getAttribute('data-theme');
+                const next = current === 'dark' ? 'light' : 'dark';
+                document.documentElement.setAttribute('data-theme', next);
+                localStorage.setItem('logiq_theme', next);
+                
+                const icon = document.getElementById('theme-icon');
+                icon.setAttribute('data-lucide', next === 'dark' ? 'sun' : 'moon');
+                lucide.createIcons({ nodes: [icon.parentElement] });
+            });
+
+            /* Update icon on load */
+            if (saved === 'dark') {
+                const icon = document.getElementById('theme-icon');
+                icon.setAttribute('data-lucide', 'sun');
+            }
+        })();
+
+        /* ── Mobile Menu ──────────────────────────────────────────────── */
+        document.getElementById('nav-menu-btn').addEventListener('click', () => {
+            document.getElementById('nav-links').classList.toggle('open');
+        });
+
+        /* ── Initialize Lucide Icons ──────────────────────────────────── */
+        lucide.createIcons();
+
+        /* ── Auth Session Dynamic Sync ───────────────────────────────── */
+        (function initAuthSync() {
+            const userJson = localStorage.getItem('logiq_user');
+            const avatarEl = document.getElementById('nav-avatar');
+            const authBtn = document.getElementById('nav-auth-btn');
+            
+            if (userJson) {
+                try {
+                    const user = JSON.parse(userJson);
+                    if (user.name) {
+                        const initials = user.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+                        avatarEl.textContent = initials || 'U';
+                    }
+                    avatarEl.style.display = 'flex';
+                    avatarEl.title = `${user.name} (${user.role})`;
+                    
+                    authBtn.textContent = 'Logout';
+                    authBtn.className = 'clay-btn clay-btn-sm clay-btn-ghost';
+                    authBtn.style.padding = '6px 14px';
+                    authBtn.style.fontSize = 'var(--font-size-xs)';
+                    authBtn.href = '#';
+                    authBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        localStorage.removeItem('logiq_user');
+                        window.location.href = '/';
+                    });
+                } catch (err) {
+                    console.error("Failed to parse user session", err);
+                }
+            } else {
+                avatarEl.style.display = 'none';
+                authBtn.textContent = 'Login';
+                authBtn.className = 'clay-btn clay-btn-sm clay-btn-primary';
+                authBtn.style.padding = '6px 14px';
+                authBtn.style.fontSize = 'var(--font-size-xs)';
+                authBtn.href = '/login';
+            }
+        })();
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

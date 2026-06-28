@@ -1,0 +1,285 @@
+{% extends "base.html" %}
+
+{% block title %}Documentation — LogiQ{% endblock %}
+
+{% block extra_css %}
+<style>
+.docs-container {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: var(--space-xl);
+    padding-top: var(--space-xl);
+    padding-bottom: var(--space-3xl);
+}
+
+.docs-sidebar {
+    position: sticky;
+    top: calc(var(--space-xl) + 80px);
+    height: fit-content;
+    padding: var(--space-lg);
+}
+
+.docs-nav-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+}
+
+.docs-nav-link {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: 10px 14px;
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    transition: all var(--transition-fast);
+    cursor: pointer;
+}
+
+.docs-nav-link:hover, .docs-nav-link.active {
+    color: var(--color-primary);
+    background: var(--color-lavender);
+    box-shadow: var(--shadow-clay-small);
+}
+
+.docs-content {
+    animation: fadeIn 0.4s ease forwards;
+}
+
+.docs-section {
+    display: none;
+}
+
+.docs-section.active {
+    display: block;
+}
+
+.docs-section h1 {
+    font-size: var(--font-size-3xl);
+    font-weight: 800;
+    margin-bottom: var(--space-sm);
+    border-bottom: 2px solid var(--color-border-soft);
+    padding-bottom: var(--space-xs);
+}
+
+.docs-section h2 {
+    font-size: var(--font-size-xl);
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-md);
+}
+
+.docs-section p {
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-md);
+    line-height: 1.7;
+}
+
+.code-block-wrapper {
+    background: #1e1e2e;
+    color: #cdd6f4;
+    border-radius: var(--radius-sm);
+    padding: var(--space-md);
+    font-family: 'Courier New', monospace;
+    font-size: var(--font-size-sm);
+    margin: var(--space-md) 0 var(--space-lg) 0;
+    position: relative;
+    overflow-x: auto;
+    box-shadow: var(--shadow-clay-pressed);
+}
+
+.code-block-copy {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: rgba(255,255,255,0.08);
+    border: none;
+    color: #a6adc8;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 10px;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.code-block-copy:hover {
+    background: rgba(255,255,255,0.15);
+    color: white;
+}
+
+.docs-badge {
+    background: var(--color-lavender);
+    color: var(--color-primary);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: var(--radius-pill);
+    text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+    .docs-container {
+        grid-template-columns: 1fr;
+    }
+    .docs-sidebar {
+        position: relative;
+        top: 0;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="docs-container">
+        <!-- Sidebar Navigation -->
+        <div class="clay-card docs-sidebar animate-slide-up delay-1">
+            <ul class="docs-nav-list">
+                <li>
+                    <a class="docs-nav-link active" data-target="docs-getting-started">
+                        <i data-lucide="book-open" width="16" height="16"></i>
+                        Getting Started
+                    </a>
+                </li>
+                <li>
+                    <a class="docs-nav-link" data-target="docs-formats">
+                        <i data-lucide="file-type-2" width="16" height="16"></i>
+                        Log Formats
+                    </a>
+                </li>
+                <li>
+                    <a class="docs-nav-link" data-target="docs-integrations">
+                        <i data-lucide="webhook" width="16" height="16"></i>
+                        Integrations
+                    </a>
+                </li>
+                <li>
+                    <a class="docs-nav-link" data-target="docs-api-ref">
+                        <i data-lucide="code" width="16" height="16"></i>
+                        API Reference
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Documentation Content Pane -->
+        <div class="clay-card docs-content animate-slide-up delay-2">
+            <!-- Section 1: Getting Started -->
+            <div class="docs-section active" id="docs-getting-started">
+                <div style="display: flex; align-items: center; justify-content: space-between; gap: var(--space-lg); margin-bottom: var(--space-md); flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 260px;">
+                        <h1>Getting Started with LogiQ</h1>
+                        <p>LogiQ is an intelligent log monitoring dashboard designed to explain system anomalies and execute self-healing remediation paths in seconds. By coupling parsing logic with an AI engine and an SQLite cache, LogiQ provides cost-efficient incident investigation.</p>
+                    </div>
+                    <div style="width: 130px; height: 130px; flex-shrink: 0;" class="hide-mobile animate-float">
+                        <img src="{{ url_for('static', filename='illustrations/docs-manual.svg') }}" alt="Docs Guide illustration" style="width: 100%; height: auto;">
+                    </div>
+                </div>
+                
+                <h2>Workflow Overview</h2>
+                <p>To inspect your infrastructure systems, follow this workflow:</p>
+                <ol style="margin-left: var(--space-lg); margin-bottom: var(--space-md); color: var(--color-text-secondary); line-height: 1.8;">
+                    <li><strong>Upload Logs:</strong> Drag and drop your `.log`, `.txt`, or `.csv` system log file onto the <a href="/upload">Upload page</a> or select a preloaded scenarios model.</li>
+                    <li><strong>Analyze Anomaly:</strong> Interact with the dashboard charts to examine spike occurrence intervals. Click "Explain" on any anomaly row to query the AI explainer.</li>
+                    <li><strong>Apply Fixes:</strong> Draft automated GitHub patch pull requests or dispatch incident alerts to team channels.</li>
+                </ol>
+
+                <h2>Interactive Demo</h2>
+                <p>Don't have a log file ready? Head to the Upload page and select one of the three preloaded scenario logs (E-commerce Outage, Intrusion Audit, or Kubernetes Pod issues) to instantly explore the dashboard capabilities.</p>
+            </div>
+
+            <!-- Section 2: Supported Formats -->
+            <div class="docs-section" id="docs-formats">
+                <h1>Supported Log Formats</h1>
+                <p>LogiQ utilizes a lexical parse engine to structure lines. Standard patterns are extracted automatically, falling back to line-by-line checks on unknown patterns.</p>
+                
+                <h2>Supported Schemas</h2>
+                <ul style="margin-left: var(--space-lg); margin-bottom: var(--space-md); color: var(--color-text-secondary); line-height: 1.8;">
+                    <li><strong>Syslog & Kernel Logs:</strong> Standard RFC 5424 time formats with host/service tags.</li>
+                    <li><strong>Nginx & Apache Access Logs:</strong> Tracks resource paths, HTTP status (e.g. 403, 429, 500), and latencies.</li>
+                    <li><strong>JSON-structured Logs:</strong> Structured fields like `{"timestamp": ..., "level": ..., "message": ...}`.</li>
+                    <li><strong>Generic Timestamp Text:</strong> Formats matching standard ISO, UTC, or localized datetime strings.</li>
+                </ul>
+
+                <h2>Sample Format Structure</h2>
+                <div class="code-block-wrapper">
+                    <button class="code-block-copy" onclick="copyCode(this)">Copy</button>
+                    <pre><code>2026-06-26T08:02:15.654Z ERROR [db-pool] Connection refused: db-primary:5432
+2026-06-26T08:03:00.000Z CRITICAL [memory] Out of memory: Java heap space</code></pre>
+                </div>
+            </div>
+
+            <!-- Section 3: Integrations -->
+            <div class="docs-section" id="docs-integrations">
+                <h1>Self-Healing Integrations</h1>
+                <p>Configure external integrations within the application to automatically notify your dev team or draft code patches for detected anomalies.</p>
+                
+                <h2>Slack & Discord Notifications</h2>
+                <p>Enter webhook URLs on your <a href="/profile">Profile page settings tab</a>. Once saved, you can click "Alert" inside the Anomaly details panel to instant-broadcast critical system incidents with description details and stack messages.</p>
+
+                <h2>GitHub Pull Requests</h2>
+                <p>Using the GitHub integration, LogiQ connects directly via repositories to draft patch files. For example, if a log indicates a configuration permission issue or database address error, the AI engine drafts a code change and pushes a Pull Request directly to your repository branch.</p>
+            </div>
+
+            <!-- Section 4: API Reference -->
+            <div class="docs-section" id="docs-api-ref">
+                <h1>API Reference</h1>
+                <p>Drive log analysis programmatically using LogiQ API endpoints. Authenticate by passing your API Key token in requests headers.</p>
+
+                <h2>1. Upload and Analyze Log</h2>
+                <p><span class="docs-badge" style="background: var(--color-mint); color: var(--color-success-dark);">POST</span> <code>/api/upload</code></p>
+                <p>Send a multipart form-data payload containing the log file.</p>
+                <div class="code-block-wrapper">
+                    <button class="code-block-copy" onclick="copyCode(this)">Copy</button>
+                    <pre><code>curl -X POST -H "Authorization: Bearer <your_api_key>" \
+     -F "file=@production.log" \
+     http://localhost:5000/api/upload</code></pre>
+                </div>
+
+                <h2>2. Trigger AI Explanation</h2>
+                <p><span class="docs-badge" style="background: var(--color-mint); color: var(--color-success-dark);">POST</span> <code>/api/explain</code></p>
+                <p>Query explanation database cache or LLM engine for specific anomaly. JSON body:</p>
+                <div class="code-block-wrapper">
+                    <button class="code-block-copy" onclick="copyCode(this)">Copy</button>
+                    <pre><code>curl -X POST -H "Content-Type: application/json" \
+     -d '{"anomaly_id": 42}' \
+     http://localhost:5000/api/explain</code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const navLinks = document.querySelectorAll('.docs-nav-link');
+    const sections = document.querySelectorAll('.docs-section');
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('data-target');
+
+            navLinks.forEach(l => l.classList.remove('active'));
+            sections.forEach(s => s.classList.remove('active'));
+
+            link.classList.add('active');
+            document.getElementById(targetId).classList.add('active');
+        });
+    });
+});
+
+function copyCode(btn) {
+    const code = btn.nextElementSibling.querySelector('code').textContent;
+    navigator.clipboard.writeText(code).then(() => {
+        const originalText = btn.textContent;
+        btn.textContent = "Copied!";
+        setTimeout(() => btn.textContent = originalText, 1500);
+    });
+}
+</script>
+{% endblock %}

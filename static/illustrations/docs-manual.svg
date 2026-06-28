@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <filter id="clay-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="3" dy="5" stdDeviation="5" flood-color="#1E1B3A" flood-opacity="0.1"/>
+    </filter>
+    <filter id="c-inset" x="-10%" y="-10%" width="120%" height="120%">
+      <feOffset dx="1" dy="2"/>
+      <feGaussianBlur stdDeviation="1" result="offset-blur"/>
+      <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse"/>
+      <feFlood flood-color="white" flood-opacity="0.6" result="color"/>
+      <feComposite operator="in" in="color" in2="inverse" result="shadow"/>
+      <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+
+  <circle cx="200" cy="200" r="160" fill="#BAE6FD" opacity="0.4"/>
+  <circle cx="200" cy="200" r="120" fill="#E8E0F0" opacity="0.5"/>
+
+  <!-- Puffy Open Notebook -->
+  <g filter="url(#clay-shadow)" transform="translate(90, 130)">
+    <!-- Book Back/Cover -->
+    <rect x="0" y="0" width="220" height="140" rx="18" fill="#818CF8"/>
+    <rect x="0" y="0" width="220" height="140" rx="18" fill="none" stroke="#FFFFFF" stroke-width="3" filter="url(#c-inset)"/>
+
+    <!-- Left Page -->
+    <rect x="12" y="10" width="92" height="120" rx="10" fill="#FFFFFF"/>
+    <!-- Mock Lines Left Page -->
+    <rect x="24" y="26" width="60" height="5" rx="2.5" fill="#E8E0F0"/>
+    <rect x="24" y="38" width="50" height="5" rx="2.5" fill="#E8E0F0"/>
+    <rect x="24" y="50" width="55" height="5" rx="2.5" fill="#E8E0F0"/>
+
+    <!-- Right Page -->
+    <rect x="116" y="10" width="92" height="120" rx="10" fill="#FFFFFF"/>
+    <!-- Mock Lines Right Page -->
+    <rect x="128" y="26" width="65" height="5" rx="2.5" fill="#E8E0F0"/>
+    <rect x="128" y="38" width="45" height="5" rx="2.5" fill="#E8E0F0"/>
+    <rect x="128" y="50" width="55" height="5" rx="2.5" fill="#E8E0F0"/>
+  </g>
+
+  <!-- Diagnostic Lightbulb (Floating) -->
+  <g filter="url(#clay-shadow)" transform="translate(230, 60)">
+    <circle cx="25" cy="25" r="20" fill="#FEF3C7" />
+    <circle cx="25" cy="25" r="20" fill="none" stroke="#FFFFFF" stroke-width="2.5" filter="url(#c-inset)"/>
+    <rect x="20" y="40" width="10" height="8" rx="2" fill="#D1D5DB"/>
+    <!-- glow element -->
+    <path d="M25,12 v6 M18,25 h6 M25,32 v-6 M32,25 h-6" fill="none" stroke="#D97706" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- Magnifying Glass -->
+  <g filter="url(#clay-shadow)" transform="translate(60, 210)">
+    <circle cx="25" cy="25" r="18" fill="#FFFFFF" />
+    <circle cx="25" cy="25" r="18" fill="none" stroke="#FCA5A5" stroke-width="4" filter="url(#c-inset)"/>
+    <line x1="38" y1="38" x2="56" y2="56" stroke="#FCA5A5" stroke-width="6" stroke-linecap="round"/>
+  </g>
+</svg>

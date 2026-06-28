@@ -1,0 +1,17 @@
+2026-06-26T09:00:01.000Z INFO  [ssh-daemon] Server listening on 0.0.0.0 port 22
+2026-06-26T09:00:15.220Z WARNING [auth-filter] Repeated login attempts from IP 192.168.1.144 - 3 failures in 10s
+2026-06-26T09:00:30.450Z ERROR [auth-validator] Authentication failed for user root from IP 192.168.1.144 - Invalid credentials
+2026-06-26T09:00:32.100Z ERROR [auth-validator] Authentication failed for user admin from IP 192.168.1.144 - Invalid credentials
+2026-06-26T09:00:35.880Z ERROR [auth-validator] Authentication failed for user support from IP 192.168.1.144 - Invalid credentials
+2026-06-26T09:00:40.000Z CRITICAL [firewall-alert] SSH brute-force attack detected from IP 192.168.1.144 - Blocking host
+2026-06-26T09:01:00.120Z INFO  [web-server] GET /index.html - 200 OK (5ms)
+2026-06-26T09:01:12.450Z WARNING [waf] Suspicious payload detected in parameter 'username' from IP 203.0.113.88 - SQL Injection pattern matched: "admin' OR 1=1--"
+2026-06-26T09:01:13.000Z ERROR [database-adapter] Query parsing failed: syntax error at or near "OR" - input: SELECT * FROM users WHERE username = 'admin' OR 1=1--'
+2026-06-26T09:02:00.100Z WARNING [web-server] Unauthorized access attempt to /admin/config.php from IP 203.0.113.88 - 403 Forbidden
+2026-06-26T09:02:15.550Z ERROR [auth-validator] JWT signature verification failed for user session - Key expired or invalid signature
+2026-06-26T09:03:00.005Z INFO  [web-server] POST /api/login - 200 OK (64ms)
+2026-06-26T09:03:45.000Z WARNING [port-monitor] High rate of connection requests on closed ports from IP 198.51.100.4 - Port scan warning
+2026-06-26T09:04:10.123Z ERROR [api-authenticator] API Key token 'ak_test_xxxx' has been revoked or deleted
+2026-06-26T09:05:00.000Z CRITICAL [security-monitor] File integrity mismatch: /usr/bin/passwd checksum changed
+2026-06-26T09:05:30.450Z WARNING [web-server] SSL handshake failed - TLSv1.0 protocol deprecated from client 45.33.22.11
+2026-06-26T09:06:00.000Z CRITICAL [auth-validator] Root access escalation attempt: sudo command executed by non-privileged user 'guest'

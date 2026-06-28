@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 280" fill="none">
+  <!-- Shadow -->
+  <ellipse cx="140" cy="258" rx="65" ry="12" fill="#E8E0F0" opacity="0.5"/>
+  
+  <!-- File body -->
+  <path d="M80 40 L170 40 L200 70 L200 240 Q200 254 186 254 L94 254 Q80 254 80 240 Z" fill="#FEF3C7" stroke="#FCD34D" stroke-width="2"/>
+  <!-- Inner glow -->
+  <path d="M84 44 L168 44 L196 72 L196 238 Q196 250 184 250 L96 250 Q84 250 84 238 Z" fill="none" stroke="white" stroke-width="3" opacity="0.5"/>
+  
+  <!-- File fold -->
+  <path d="M170 40 L170 70 L200 70" fill="#FDE68A" stroke="#FCD34D" stroke-width="2"/>
+  <path d="M172 44 L172 68 L196 68" fill="none" stroke="white" stroke-width="1.5" opacity="0.4"/>
+  
+  <!-- Text lines -->
+  <rect x="100" y="90" width="80" height="4" rx="2" fill="#E5D5A0" opacity="0.7"/>
+  <rect x="100" y="104" width="60" height="4" rx="2" fill="#E5D5A0" opacity="0.5"/>
+  <rect x="100" y="118" width="72" height="4" rx="2" fill="#E5D5A0" opacity="0.7"/>
+  <rect x="100" y="132" width="50" height="4" rx="2" fill="#E5D5A0" opacity="0.5"/>
+  <rect x="100" y="146" width="78" height="4" rx="2" fill="#FCA5A5" opacity="0.6"/>
+  <rect x="100" y="160" width="65" height="4" rx="2" fill="#E5D5A0" opacity="0.5"/>
+  <rect x="100" y="174" width="70" height="4" rx="2" fill="#E5D5A0" opacity="0.7"/>
+  <rect x="100" y="188" width="55" height="4" rx="2" fill="#FCA5A5" opacity="0.6"/>
+  <rect x="100" y="202" width="75" height="4" rx="2" fill="#E5D5A0" opacity="0.5"/>
+  
+  <!-- Lightning bolt -->
+  <g transform="translate(155, 130)">
+    <path d="M20 0 L6 28 L18 28 L2 56 L36 22 L22 22 L36 0 Z" fill="#6366F1" opacity="0.85"/>
+    <!-- Lightning highlight -->
+    <path d="M22 2 L10 26 L19 26 L6 48" stroke="white" stroke-width="2" fill="none" opacity="0.4" stroke-linecap="round"/>
+    <!-- Glow -->
+    <path d="M20 0 L6 28 L18 28 L2 56 L36 22 L22 22 L36 0 Z" fill="#6366F1" opacity="0.15" transform="scale(1.15) translate(-1.5, -2)"/>
+  </g>
+  
+  <!-- Sparkles around lightning -->
+  <g fill="#6366F1" opacity="0.5">
+    <circle cx="210" cy="120" r="3"/>
+    <circle cx="220" cy="170" r="2.5"/>
+    <circle cx="195" cy="195" r="2"/>
+    <circle cx="65" cy="100" r="2.5"/>
+    <circle cx="60" cy="220" r="3"/>
+  </g>
+  
+  <!-- Small energy particles -->
+  <circle cx="175" cy="125" r="2" fill="#A5B4FC" opacity="0.7"/>
+  <circle cx="200" cy="155" r="1.5" fill="#A5B4FC" opacity="0.5"/>
+  <circle cx="185" cy="190" r="2" fill="#A5B4FC" opacity="0.6"/>
+</svg>

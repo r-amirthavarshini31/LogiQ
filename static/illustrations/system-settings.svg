@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <!-- Soft outer drop shadow -->
+    <filter id="clay-shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="4" dy="6" stdDeviation="6" flood-color="#1E1B3A" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Background circle decoration -->
+  <circle cx="200" cy="200" r="160" fill="#FEE2E2" opacity="0.3"/>
+
+  <!-- Gear / Cog (Left Side) -->
+  <g filter="url(#clay-shadow)" transform="translate(60, 90)">
+    <circle cx="50" cy="50" r="38" fill="#6EE7B7" />
+    <circle cx="50" cy="50" r="38" fill="none" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="3"/>
+    <circle cx="50" cy="50" r="14" fill="#FFFFFF" />
+    <!-- teeth -->
+    <rect x="44" y="2" width="12" height="12" rx="4" fill="#6EE7B7"/>
+    <rect x="44" y="86" width="12" height="12" rx="4" fill="#6EE7B7"/>
+    <rect x="2" y="44" width="12" height="12" rx="4" fill="#6EE7B7"/>
+    <rect x="86" y="44" width="12" height="12" rx="4" fill="#6EE7B7"/>
+  </g>
+
+  <!-- Slider Config Card (Lower Left Side) -->
+  <g filter="url(#clay-shadow)" transform="translate(40, 210)">
+    <rect x="0" y="0" width="150" height="74" rx="18" fill="#FFFFFF"/>
+    <rect x="0" y="0" width="150" height="74" rx="18" fill="none" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="3"/>
+    
+    <!-- Slider Track 1 -->
+    <rect x="18" y="24" width="114" height="6" rx="3" fill="#E8E0F0"/>
+    <circle cx="65" cy="27" r="10" fill="#818CF8"/>
+    <circle cx="65" cy="27" r="10" fill="none" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="1.5"/>
+
+    <!-- Slider Track 2 -->
+    <rect x="18" y="46" width="114" height="6" rx="3" fill="#E8E0F0"/>
+    <circle cx="105" cy="49" r="10" fill="#FCA5A5"/>
+    <circle cx="105" cy="49" r="10" fill="none" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="1.5"/>
+  </g>
+
+  <!-- SRE Engineer (Right Side) -->
+  <g filter="url(#clay-shadow)" transform="translate(160, 0)">
+    <!-- Body (Solid Sky/Indigo shirt) -->
+    <path d="M70,330 C70,285 100,255 160,255 C220,255 250,285 250,330 Z" fill="#818CF8"/>
+    <path d="M74,330 C74,288 102,258 160,258 C218,258 246,288 246,330" fill="none" stroke="#FFFFFF" stroke-opacity="0.4" stroke-width="4" stroke-linecap="round"/>
+
+    <!-- Neck -->
+    <rect x="146" y="225" width="28" height="38" rx="12" fill="#FED7AA"/>
+
+    <!-- Head -->
+    <rect x="110" y="130" width="100" height="106" rx="42" fill="#FED7AA"/>
+    <rect x="110" y="130" width="100" height="106" rx="42" fill="none" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="3"/>
+
+    <!-- Hair (Solid Blonde/Ginger hair with side sweep) -->
+    <path d="M110,160 C105,140 120,115 160,115 C200,115 215,140 210,160 C202,150 190,154 180,144 C170,154 150,150 140,144 C130,154 120,150 110,160 Z" fill="#D97706"/>
+
+    <!-- Face Details -->
+    <circle cx="138" cy="180" r="4.5" fill="#374151"/>
+    <circle cx="182" cy="180" r="4.5" fill="#374151"/>
+    <path d="M152,196 Q160,202 168,196" fill="none" stroke="#E07A5F" stroke-width="3" stroke-linecap="round"/>
+  </g>
+</svg>

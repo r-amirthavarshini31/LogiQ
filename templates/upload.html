@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Upload{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: var(--space-2xl); padding-bottom: var(--space-3xl);">
+    <div class="container-narrow" style="margin: 0 auto;">
+        <!-- Page Header -->
+        <div class="page-header" style="text-align: center;">
+            <h1 class="page-title animate-fade-in">Upload Log File</h1>
+            <p class="page-subtitle animate-fade-in delay-1">Drop your log file below and let LogiQ do the rest</p>
+        </div>
+
+        <!-- Error Banner -->
+        <div class="error-banner" id="upload-error">
+            <i data-lucide="alert-circle" width="20" height="20"></i>
+            <span id="upload-error-message">An error occurred</span>
+        </div>
+
+        <!-- Drop Zone -->
+        <div class="drop-zone clay-card animate-slide-up delay-2" id="drop-zone">
+            <div class="drop-zone-illustration">
+                <img src="{{ url_for('static', filename='illustrations/cloud-upload.svg') }}" alt="Upload illustration" width="180" height="180">
+            </div>
+            <div class="drop-zone-text">
+                <h3 class="drop-zone-title">Drag & drop your log file here</h3>
+                <p class="drop-zone-subtitle">or click to browse your files</p>
+                <div class="drop-zone-formats">
+                    <span class="format-tag">.log</span>
+                    <span class="format-tag">.txt</span>
+                    <span class="format-tag">.csv</span>
+                </div>
+            </div>
+            <input type="file" id="file-input" accept=".log,.txt,.csv" style="display: none;">
+        </div>
+
+        <!-- Preloaded Scenarios -->
+        <div style="margin-top: var(--space-2xl); text-align: center;" class="animate-slide-up delay-3">
+            <h3 style="margin-bottom: var(--space-md);">Or explore preloaded scenarios</h3>
+            <p style="color: var(--color-text-secondary); font-size: var(--font-size-sm); margin-bottom: var(--space-xl);">
+                Click any scenario card below to load ready-to-virtualize datasets and explore AI diagnostics instantly.
+            </p>
+            
+            <div class="grid grid-3" style="gap: var(--space-md);">
+                <!-- Scenario 1 -->
+                <div class="clay-card-interactive preloaded-card" data-dataset="e_commerce_outage" style="background: var(--color-sky); text-align: left; padding: var(--space-lg); border-radius: var(--radius-md);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-sm);">
+                        <span class="badge" style="background: rgba(2, 132, 199, 0.1); color: var(--color-warning-dark); font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: var(--radius-pill);">DATABASE & CACHE</span>
+                        <i data-lucide="database" width="16" height="16" style="color: var(--color-warning-dark);"></i>
+                    </div>
+                    <h4 style="font-size: var(--font-size-base); margin-bottom: var(--space-xs);">E-Commerce Outage</h4>
+                    <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-bottom: var(--space-md); line-height: 1.5;">
+                        Simulate OOM crashes, PostgreSQL deadlock conflicts, and payment API timeouts.
+                    </p>
+                    <span class="clay-btn clay-btn-sm clay-btn-primary" style="padding: 6px 12px; width: 100%; border-radius: 8px;">Explore Scenario</span>
+                </div>
+
+                <!-- Scenario 2 -->
+                <div class="clay-card-interactive preloaded-card" data-dataset="security_audit" style="background: var(--color-peach); text-align: left; padding: var(--space-lg); border-radius: var(--radius-md);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-sm);">
+                        <span class="badge" style="background: rgba(220, 38, 38, 0.1); color: var(--color-error-dark); font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: var(--radius-pill);">SECURITY AUDIT</span>
+                        <i data-lucide="shield-alert" width="16" height="16" style="color: var(--color-error-dark);"></i>
+                    </div>
+                    <h4 style="font-size: var(--font-size-base); margin-bottom: var(--space-xs);">Intrusion Attempt</h4>
+                    <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-bottom: var(--space-md); line-height: 1.5;">
+                        Spot SSH brute-forcing attempts, web WAF SQLi hits, and root sudo escalations.
+                    </p>
+                    <span class="clay-btn clay-btn-sm clay-btn-primary" style="padding: 6px 12px; width: 100%; border-radius: 8px;">Explore Scenario</span>
+                </div>
+
+                <!-- Scenario 3 -->
+                <div class="clay-card-interactive preloaded-card" data-dataset="kubernetes_cluster" style="background: var(--color-mint); text-align: left; padding: var(--space-lg); border-radius: var(--radius-md);">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: var(--space-sm);">
+                        <span class="badge" style="background: rgba(5, 150, 105, 0.1); color: var(--color-success-dark); font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: var(--radius-pill);">KUBERNETES</span>
+                        <i data-lucide="container" width="16" height="16" style="color: var(--color-success-dark);"></i>
+                    </div>
+                    <h4 style="font-size: var(--font-size-base); margin-bottom: var(--space-xs);">Cluster Evictions</h4>
+                    <p style="font-size: var(--font-size-xs); color: var(--color-text-secondary); margin-bottom: var(--space-md); line-height: 1.5;">
+                        Track CrashLoopBackOff container failures, pod eviction memory limits, and CoreDNS errors.
+                    </p>
+                    <span class="clay-btn clay-btn-sm clay-btn-primary" style="padding: 6px 12px; width: 100%; border-radius: 8px;">Explore Scenario</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Progress Section -->
+        <div class="progress-container" id="progress-container">
+            <div class="clay-card-flat" style="padding: var(--space-xl);">
+                <div class="progress-bar-wrapper">
+                    <div class="progress-bar-fill" id="progress-bar"></div>
+                </div>
+                <div class="progress-status">
+                    <i data-lucide="loader" width="16" height="16" id="progress-icon"></i>
+                    <span id="progress-message">Preparing...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/upload.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <!-- Soft outer drop shadow -->
+    <filter id="clay-shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="4" dy="6" stdDeviation="6" flood-color="#1E1B3A" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Background circle decoration -->
+  <circle cx="200" cy="200" r="160" fill="#E0F2FE" opacity="0.3"/>
+
+  <!-- Upload Cloud (Right Side) -->
+  <g filter="url(#clay-shadow)" transform="translate(180, 100)">
+    <!-- Base pill -->
+    <rect x="10" y="70" width="170" height="50" rx="25" fill="#FFFFFF"/>
+    <!-- Overlapping puffy nodes -->
+    <circle cx="50" cy="65" r="35" fill="#FFFFFF"/>
+    <circle cx="100" cy="45" r="45" fill="#FFFFFF"/>
+    <circle cx="145" cy="65" r="30" fill="#FFFFFF"/>
+    
+    <!-- White Glare Lines for Cloud Volume -->
+    <path d="M 12,75 A 33,33 0 0,1 50,32 A 43,43 0 0,1 100,2 A 28,28 0 0,1 145,37 A 28,28 0 0,1 178,75" fill="none" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="4" stroke-linecap="round"/>
+
+    <!-- Upload arrow symbol in center of cloud -->
+    <g transform="translate(85, 55)">
+      <circle cx="15" cy="15" r="18" fill="#E0F2FE"/>
+      <path d="M 15,24 L 15,6 M 9,12 L 15,6 L 21,12" fill="none" stroke="#0284C7" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+
+  <!-- Female Developer / Operator (Left Side) -->
+  <g filter="url(#clay-shadow)">
+    <!-- Body (Solid Mint green) -->
+    <path d="M60,330 C60,285 85,255 130,255 C175,255 200,285 200,330 Z" fill="#10B981"/>
+    <path d="M64,330 C64,288 88,258 130,258 C172,258 196,288 196,330" fill="none" stroke="#FFFFFF" stroke-opacity="0.4" stroke-width="4" stroke-linecap="round"/>
+
+    <!-- Neck -->
+    <rect x="118" y="225" width="24" height="36" rx="12" fill="#FED7AA"/>
+
+    <!-- Head -->
+    <rect x="90" y="140" width="80" height="90" rx="35" fill="#FED7AA"/>
+    <rect x="90" y="140" width="80" height="90" rx="35" fill="none" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="3"/>
+
+    <!-- Hair (Solid Auburn/Brown with high-volume bun) -->
+    <circle cx="130" cy="120" r="22" fill="#78350F"/>
+    <path d="M90,165 C85,150 100,135 130,135 C160,135 175,150 170,165 C160,158 150,160 130,152 C110,160 100,158 90,165 Z" fill="#78350F"/>
+
+    <!-- Face Details -->
+    <circle cx="112" cy="185" r="4" fill="#374151"/>
+    <circle cx="148" cy="185" r="4" fill="#374151"/>
+    <path d="M126,198 Q130,203 134,198" fill="none" stroke="#E07A5F" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- Floating Log File Card (Being guided into the cloud) -->
+  <g filter="url(#clay-shadow)" transform="translate(130, 200)">
+    <rect x="0" y="0" width="70" height="80" rx="14" fill="#E8E0F0"/>
+    <rect x="0" y="0" width="70" height="80" rx="14" fill="none" stroke="#FFFFFF" stroke-opacity="0.7" stroke-width="2.5"/>
+    
+    <!-- Doc Mock lines -->
+    <rect x="12" y="16" width="46" height="5" rx="2.5" fill="#6366F1" opacity="0.6"/>
+    <rect x="12" y="28" width="30" height="5" rx="2.5" fill="#6B6890" opacity="0.4"/>
+    <rect x="12" y="40" width="40" height="5" rx="2.5" fill="#6B6890" opacity="0.4"/>
+    <rect x="12" y="52" width="22" height="5" rx="2.5" fill="#FCA5A5" opacity="0.7"/>
+  </g>
+</svg>

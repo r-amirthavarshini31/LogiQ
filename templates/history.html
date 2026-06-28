@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}History{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: var(--space-xl); padding-bottom: var(--space-3xl);">
+
+    <!-- Page Header -->
+    <div class="page-header flex-between">
+        <div>
+            <h1 class="page-title animate-fade-in">History</h1>
+            <p class="page-subtitle animate-fade-in delay-1">Browse all past anomalies</p>
+        </div>
+        <div class="flex gap-md" style="flex-wrap: wrap;">
+            <button class="clay-btn clay-btn-error animate-fade-in delay-1" id="btn-clear-history" style="display: none;">
+                <i data-lucide="trash-2" width="18" height="18"></i>
+                Clear History
+            </button>
+            <button class="clay-btn clay-btn-outline animate-fade-in delay-1" id="btn-export-csv" style="display: none;">
+                <i data-lucide="download" width="18" height="18"></i>
+                Export CSV
+            </button>
+        </div>
+    </div>
+
+    <!-- Error Banner -->
+    <div class="error-banner" id="history-error">
+        <i data-lucide="alert-circle" width="20" height="20"></i>
+        <span id="history-error-message">An error occurred</span>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="clay-card-flat filter-bar animate-fade-in delay-2" id="history-filters">
+        <div class="filter-group">
+            <label class="filter-label" for="filter-date-from">From</label>
+            <input type="date" class="clay-input" id="filter-date-from" style="width: 160px;">
+        </div>
+        <div class="filter-group">
+            <label class="filter-label" for="filter-date-to">To</label>
+            <input type="date" class="clay-input" id="filter-date-to" style="width: 160px;">
+        </div>
+        <div class="filter-group">
+            <label class="filter-label" for="filter-severity">Severity</label>
+            <select class="clay-input clay-select" id="filter-severity" style="width: 140px;">
+                <option value="">All</option>
+                <option value="critical">Critical</option>
+                <option value="error">Error</option>
+                <option value="warning">Warning</option>
+                <option value="info">Info</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label" for="filter-category">Category</label>
+            <select class="clay-input clay-select" id="filter-category" style="width: 150px;">
+                <option value="">All</option>
+                <option value="Database">Database</option>
+                <option value="Network">Network</option>
+                <option value="Auth">Auth</option>
+                <option value="Memory">Memory</option>
+                <option value="File System">File System</option>
+                <option value="Timeout">Timeout</option>
+                <option value="Application">Application</option>
+                <option value="Unknown">Unknown</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label class="filter-label" for="filter-status">Status</label>
+            <select class="clay-input clay-select" id="filter-status" style="width: 130px;">
+                <option value="">All</option>
+                <option value="open">Open</option>
+                <option value="resolved">Resolved</option>
+            </select>
+        </div>
+        <div class="filter-group" style="align-self: flex-end;">
+            <button class="clay-btn clay-btn-sm clay-btn-primary" id="btn-apply-filters">
+                <i data-lucide="filter" width="14" height="14"></i>
+                Apply
+            </button>
+        </div>
+        <div class="filter-group" style="align-self: flex-end;">
+            <button class="clay-btn clay-btn-sm clay-btn-ghost" id="btn-clear-filters">
+                <i data-lucide="x" width="14" height="14"></i>
+                Clear
+            </button>
+        </div>
+    </div>
+
+    <!-- History Table -->
+    <div class="clay-card animate-slide-up delay-3" style="margin-top: var(--space-lg);" id="history-table-card">
+        <div class="clay-table-wrapper">
+            <table class="clay-table" id="history-table">
+                <thead>
+                    <tr>
+                        <th id="hth-id">ID</th>
+                        <th id="hth-timestamp">Timestamp</th>
+                        <th id="hth-level">Level</th>
+                        <th id="hth-category">Category</th>
+                        <th id="hth-message">Message</th>
+                        <th id="hth-cache">Source</th>
+                        <th id="hth-status">Status</th>
+                        <th id="hth-actions">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="history-table-body">
+                    <!-- Populated by history.js -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="history-empty" style="display: none;">
+            <div class="empty-state-illustration">
+                <img src="{{ url_for('static', filename='illustrations/logs-archive.svg') }}" alt="No history" width="280" height="280">
+            </div>
+            <h3 class="empty-state-title">No History Yet</h3>
+            <p class="empty-state-text">Upload and analyze a log file to start building your anomaly history.</p>
+            <a href="/upload" class="clay-btn clay-btn-primary">
+                <i data-lucide="upload-cloud" width="18" height="18"></i>
+                Upload a Log File
+            </a>
+        </div>
+
+        <!-- Loading State -->
+        <div id="history-loading" style="display: none; padding: var(--space-2xl);">
+            <div class="flex-center gap-sm">
+                <div class="chart-loading-spinner"></div>
+                <span style="color: var(--color-text-muted); font-size: var(--font-size-sm);">Loading history...</span>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/history.js') }}"></script>
+<script src="{{ url_for('static', filename='js/drawer.js') }}"></script>
+{% endblock %}

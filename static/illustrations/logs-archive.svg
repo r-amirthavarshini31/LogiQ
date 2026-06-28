@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <!-- Soft outer drop shadow -->
+    <filter id="clay-shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="4" dy="6" stdDeviation="6" flood-color="#1E1B3A" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <!-- Background circle decoration -->
+  <circle cx="200" cy="200" r="160" fill="#E8E0F0" opacity="0.3"/>
+
+  <!-- Filing Drawer / Archive Cabinet (Left Side) -->
+  <g filter="url(#clay-shadow)" transform="translate(40, 140)">
+    <rect x="0" y="0" width="150" height="150" rx="20" fill="#FFFFFF"/>
+    <rect x="0" y="0" width="150" height="150" rx="20" fill="none" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="4"/>
+    
+    <!-- Drawer 1 -->
+    <rect x="15" y="15" width="120" height="50" rx="10" fill="#E8E0F0"/>
+    <rect x="55" y="36" width="40" height="8" rx="4" fill="#818CF8"/>
+
+    <!-- Drawer 2 -->
+    <rect x="15" y="85" width="120" height="50" rx="10" fill="#E8E0F0"/>
+    <rect x="55" y="106" width="40" height="8" rx="4" fill="#818CF8"/>
+  </g>
+
+  <!-- Floating Archive Document Sheet (Top Left) -->
+  <g filter="url(#clay-shadow)" transform="translate(60, 50)">
+    <rect x="10" y="10" width="70" height="86" rx="12" fill="#D1FAE5" transform="rotate(-10)"/>
+    <rect x="10" y="10" width="70" height="86" rx="12" fill="none" stroke="#FFFFFF" stroke-opacity="0.6" stroke-width="2.5" transform="rotate(-10)"/>
+    <!-- Mock Lines -->
+    <rect x="25" y="26" width="40" height="4" rx="2" fill="#059669" opacity="0.4" transform="rotate(-10)"/>
+    <rect x="25" y="38" width="30" height="4" rx="2" fill="#059669" opacity="0.4" transform="rotate(-10)"/>
+    <rect x="25" y="50" width="35" height="4" rx="2" fill="#059669" opacity="0.4" transform="rotate(-10)"/>
+  </g>
+
+  <!-- Developer Investigator (Right Side) -->
+  <g filter="url(#clay-shadow)" transform="translate(160, 30)">
+    <!-- Body (Solid Peach Shirt) -->
+    <path d="M70,300 C70,255 100,225 160,225 C220,225 250,255 250,300 Z" fill="#FCA5A5"/>
+    <path d="M74,300 C74,258 102,228 160,228 C218,228 246,258 246,300" fill="none" stroke="#FFFFFF" stroke-opacity="0.4" stroke-width="4" stroke-linecap="round"/>
+
+    <!-- Neck -->
+    <rect x="146" y="195" width="28" height="38" rx="12" fill="#FED7AA"/>
+
+    <!-- Head -->
+    <rect x="110" y="100" width="100" height="106" rx="42" fill="#FED7AA"/>
+    <rect x="110" y="100" width="100" height="106" rx="42" fill="none" stroke="#FFFFFF" stroke-opacity="0.5" stroke-width="3"/>
+
+    <!-- Hair (Solid Dark Grey with high-side volume) -->
+    <path d="M110,130 C105,110 120,85 160,85 C200,85 215,110 210,130 C202,120 190,124 180,114 C170,124 150,120 140,114 C130,124 120,120 110,130 Z" fill="#1F2937"/>
+
+    <!-- Face Details -->
+    <circle cx="138" cy="150" r="4.5" fill="#374151"/>
+    <circle cx="182" cy="150" r="4.5" fill="#374151"/>
+    <path d="M152,166 Q160,172 168,166" fill="none" stroke="#E07A5F" stroke-width="3" stroke-linecap="round"/>
+
+    <!-- Magnifying Glass -->
+    <g transform="translate(40, 150)">
+      <line x1="15" y1="15" x2="30" y2="30" stroke="#78350F" stroke-width="6" stroke-linecap="round"/>
+      <circle cx="10" cy="10" r="16" fill="#FFFFFF" fill-opacity="0.1" stroke="#F59E0B" stroke-width="4" filter="url(#clay-shadow)"/>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,216 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+<style>
+.dropdown-item {
+    transition: background-color var(--transition-fast);
+    border-radius: 6px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+.dropdown-item:hover {
+    background-color: var(--color-lavender);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: var(--space-xl); padding-bottom: var(--space-3xl);">
+
+    <!-- Page Header -->
+    <div class="page-header flex-between" style="flex-wrap: wrap; gap: var(--space-md);">
+        <div>
+            <h1 class="page-title animate-fade-in">Dashboard</h1>
+            <p class="page-subtitle animate-fade-in delay-1">Anomaly analysis at a glance</p>
+        </div>
+        <div class="flex gap-md" style="flex-wrap: wrap;">
+            <!-- Export Dropdown -->
+            <div class="export-dropdown-wrapper" style="position: relative;" id="export-dropdown-wrapper">
+                <button class="clay-btn clay-btn-outline animate-fade-in delay-1" id="btn-export-dropdown" style="display: none;">
+                    <i data-lucide="download" width="18" height="18"></i>
+                    Export Analysis
+                </button>
+                <div class="clay-card-flat dropdown-menu" id="export-dropdown-menu" style="display: none; position: absolute; top: calc(100% + 8px); right: 0; min-width: 180px; z-index: 10; padding: 8px 0; border-radius: var(--radius-sm);">
+                    <button class="dropdown-item" id="export-json-btn" style="display: flex; width:100%; text-align: left; padding: 10px 16px; font-size: var(--font-size-sm); font-weight: 600; gap: 8px; align-items: center; color: var(--color-text);">
+                        <i data-lucide="file-json" width="16" height="16" style="color: var(--color-primary-light);"></i>
+                        Export JSON
+                    </button>
+                    <button class="dropdown-item" id="export-csv-btn" style="display: flex; width:100%; text-align: left; padding: 10px 16px; font-size: var(--font-size-sm); font-weight: 600; gap: 8px; align-items: center; color: var(--color-text);">
+                        <i data-lucide="file-spreadsheet" width="16" height="16" style="color: var(--color-success-dark);"></i>
+                        Export CSV
+                    </button>
+                    <button class="dropdown-item" id="export-md-btn" style="display: flex; width:100%; text-align: left; padding: 10px 16px; font-size: var(--font-size-sm); font-weight: 600; gap: 8px; align-items: center; color: var(--color-text);">
+                        <i data-lucide="file-text" width="16" height="16" style="color: #B45309;"></i>
+                        Incident Report
+                    </button>
+                </div>
+            </div>
+            <a href="/upload" class="clay-btn clay-btn-primary animate-fade-in delay-1" id="btn-new-analysis">
+                <i data-lucide="upload-cloud" width="18" height="18"></i>
+                New Analysis
+            </a>
+        </div>
+    </div>
+
+    <!-- Session Info -->
+    <div class="session-info animate-fade-in delay-1" id="session-info" style="display: none;">
+        <i data-lucide="file-text" width="18" height="18" style="color: var(--color-primary);"></i>
+        <span class="session-info-label">File:</span>
+        <span class="session-info-value" id="session-filename">—</span>
+        <div class="session-info-separator"></div>
+        <span class="session-info-label">Analyzed:</span>
+        <span class="session-info-value" id="session-date">—</span>
+    </div>
+
+    <!-- Error Banner -->
+    <div class="error-banner" id="dashboard-error">
+        <i data-lucide="alert-circle" width="20" height="20"></i>
+        <span id="dashboard-error-message">An error occurred</span>
+    </div>
+
+    <!-- Empty State -->
+    <div class="dashboard-empty clay-card" id="dashboard-empty" style="display: none;">
+        <div class="dashboard-empty-illustration">
+            <img src="{{ url_for('static', filename='illustrations/man-developer.svg') }}" alt="No data" width="280" height="280">
+        </div>
+        <h2>No Analysis Data Yet</h2>
+        <p>Upload a log file to see anomaly detection results, charts, and AI-powered explanations.</p>
+        <a href="/upload" class="clay-btn clay-btn-primary" id="btn-empty-upload">
+            <i data-lucide="upload-cloud" width="18" height="18"></i>
+            Upload Your First Log
+        </a>
+    </div>
+
+    <!-- Dashboard Content (hidden until data loads) -->
+    <div id="dashboard-content" style="display: none;">
+        <!-- Stat Cards -->
+        <div class="dashboard-stats" id="stat-cards">
+            <div class="clay-card stat-card animate-slide-up delay-1" id="stat-total-lines">
+                <div class="stat-icon lavender">
+                    <i data-lucide="file-text" width="24" height="24"></i>
+                </div>
+                <div>
+                    <div class="stat-value" id="stat-total-lines-value">0</div>
+                    <div class="stat-label">Total Log Lines</div>
+                </div>
+            </div>
+            <div class="clay-card stat-card animate-slide-up delay-2" id="stat-anomalies">
+                <div class="stat-icon peach">
+                    <i data-lucide="alert-triangle" width="24" height="24"></i>
+                </div>
+                <div>
+                    <div class="stat-value" id="stat-anomalies-value">0</div>
+                    <div class="stat-label">Anomalies Detected</div>
+                </div>
+            </div>
+            <div class="clay-card stat-card animate-slide-up delay-3" id="stat-critical">
+                <div class="stat-icon peach" style="background: var(--color-peach-deep);">
+                    <i data-lucide="flame" width="24" height="24"></i>
+                </div>
+                <div>
+                    <div class="stat-value" id="stat-critical-value">0</div>
+                    <div class="stat-label">Critical Errors</div>
+                </div>
+            </div>
+            <div class="clay-card stat-card animate-slide-up delay-4" id="stat-resolved">
+                <div class="stat-icon mint">
+                    <i data-lucide="check-circle" width="24" height="24"></i>
+                </div>
+                <div>
+                    <div class="stat-value" id="stat-resolved-value">0</div>
+                    <div class="stat-label">Resolved</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts -->
+        <div class="chart-grid">
+            <div class="clay-card chart-container animate-scale-in delay-2" id="timeline-chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">
+                        <i data-lucide="activity" width="20" height="20"></i>
+                        Anomaly Timeline
+                    </h3>
+                </div>
+                <div class="chart-canvas-wrapper timeline">
+                    <canvas id="timeline-chart"></canvas>
+                </div>
+            </div>
+            <div class="clay-card chart-container animate-scale-in delay-3" id="category-chart-container">
+                <div class="chart-header">
+                    <h3 class="chart-title">
+                        <i data-lucide="pie-chart" width="20" height="20"></i>
+                        Category Breakdown
+                    </h3>
+                </div>
+                <div class="chart-canvas-wrapper donut">
+                    <canvas id="category-chart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Anomaly Table -->
+        <div class="anomaly-table-section">
+            <div class="clay-card" id="anomaly-table-card">
+                <div class="anomaly-table-header">
+                    <h3 class="anomaly-table-title">
+                        <i data-lucide="list" width="20" height="20"></i>
+                        Detected Anomalies
+                    </h3>
+                    <div class="anomaly-table-actions">
+                        <button class="clay-btn clay-btn-sm clay-btn-ghost" id="btn-refresh-table">
+                            <i data-lucide="refresh-cw" width="14" height="14"></i>
+                            Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <div class="clay-table-wrapper">
+                    <table class="clay-table" id="anomaly-table">
+                        <thead>
+                            <tr>
+                                <th data-sort="timestamp" id="th-timestamp">
+                                    Timestamp <i data-lucide="arrow-up-down" width="12" height="12" class="sort-icon"></i>
+                                </th>
+                                <th data-sort="level" id="th-level">
+                                    Level <i data-lucide="arrow-up-down" width="12" height="12" class="sort-icon"></i>
+                                </th>
+                                <th data-sort="category" id="th-category">
+                                    Category <i data-lucide="arrow-up-down" width="12" height="12" class="sort-icon"></i>
+                                </th>
+                                <th id="th-message">Message</th>
+                                <th data-sort="status" id="th-status">
+                                    Status <i data-lucide="arrow-up-down" width="12" height="12" class="sort-icon"></i>
+                                </th>
+                                <th id="th-actions">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="anomaly-table-body">
+                            <!-- Populated by dashboard.js -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Table Empty State -->
+                <div class="empty-state" id="table-empty" style="display: none;">
+                    <div class="empty-state-illustration">
+                        <img src="{{ url_for('static', filename='illustrations/shield-check.svg') }}" alt="No anomalies">
+                    </div>
+                    <h3 class="empty-state-title">All Clear</h3>
+                    <p class="empty-state-text">No anomalies detected in this log file. Your systems are looking healthy!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+<script src="{{ url_for('static', filename='js/drawer.js') }}"></script>
+{% endblock %}

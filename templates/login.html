@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Login — LogiQ{% endblock %}
+
+{% block extra_css %}
+<style>
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 120px);
+    padding: var(--space-xl) var(--space-md);
+}
+
+.login-card {
+    width: 100%;
+    max-width: 440px;
+    padding: var(--space-2xl);
+    animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: var(--space-xl);
+}
+
+.login-icon-box {
+    width: 60px;
+    height: 60px;
+    border-radius: 18px;
+    background: var(--color-lavender);
+    color: var(--color-primary);
+    margin: 0 auto var(--space-md) auto;
+    box-shadow: var(--shadow-clay-small);
+}
+
+.login-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 800;
+    margin-bottom: var(--space-xs);
+}
+
+.login-subtitle {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.form-group {
+    margin-bottom: var(--space-lg);
+}
+
+.form-label {
+    display: block;
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.form-helper {
+    font-size: var(--font-size-xs);
+    color: var(--color-text-muted);
+    margin-top: 4px;
+}
+
+.login-error {
+    background: var(--color-peach);
+    color: var(--color-error-dark);
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-size-sm);
+    margin-bottom: var(--space-lg);
+    display: none;
+    align-items: center;
+    gap: var(--space-sm);
+    box-shadow: var(--shadow-clay-small);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="login-container" style="max-width: 900px; margin: 0 auto; display: flex; align-items: center; justify-content: center; gap: var(--space-3xl); width: 100%;">
+    <div class="login-graphic hide-mobile" style="flex: 1.1; text-align: center; max-width: 400px; margin-top: -20px;">
+        <img src="{{ url_for('static', filename='illustrations/man-developer.svg') }}" alt="SRE Developer illustration" style="width: 100%; height: auto;" class="animate-float">
+    </div>
+    
+    <div class="clay-card login-card" style="flex: 1; min-width: 320px;">
+        <div class="login-header">
+            <div class="login-icon-box flex-center">
+                <i data-lucide="shield-check" width="30" height="30"></i>
+            </div>
+            <h1 class="login-title">Welcome to Logi<span class="text-gradient">Q</span></h1>
+            <p class="login-subtitle">Sign in to start explaining your logs</p>
+        </div>
+
+        <div class="login-error" id="login-error-banner">
+            <i data-lucide="alert-circle" width="18" height="18"></i>
+            <span id="login-error-message">Invalid username or password</span>
+        </div>
+
+        <form id="login-form">
+            <div class="form-group">
+                <label class="form-label" for="username">Username</label>
+                <input class="clay-input" type="text" id="username" placeholder="e.g., DevOps Dan" required autocomplete="username">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="email">Work Email</label>
+                <input class="clay-input" type="email" id="email" placeholder="e.g., dan@company.com" required autocomplete="email">
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="role">Team Role</label>
+                <select class="clay-input clay-select" id="role" required>
+                    <option value="DevOps Engineer">DevOps Engineer</option>
+                    <option value="SRE Analyst">SRE Analyst</option>
+                    <option value="Security Auditor">Security Auditor</option>
+                    <option value="Platform Engineer">Platform Engineer</option>
+                    <option value="Fullstack Developer">Fullstack Developer</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">Password</label>
+                <input class="clay-input" type="password" id="password" placeholder="••••••••" required autocomplete="current-password">
+                <div class="form-helper">Enter any password (mock authentication validation)</div>
+            </div>
+
+            <button type="submit" class="clay-btn clay-btn-primary" style="width: 100%; margin-top: var(--space-md);">
+                <i data-lucide="log-in" width="18" height="18"></i>
+                Sign In
+            </button>
+        </form>
+        <div class="auth-switch" style="text-align: center; margin-top: var(--space-lg); font-size: var(--font-size-sm); color: var(--color-text-secondary);">
+            Don't have an account? <a href="/signup" style="font-weight: 700;">Sign Up</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/login.js') }}"></script>
+{% endblock %}

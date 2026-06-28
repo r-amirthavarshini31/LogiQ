@@ -1,0 +1,24 @@
+2026-06-26T08:00:01.120Z INFO  [service-gateway] Gateway routing service started successfully on port 80
+2026-06-26T08:00:05.450Z INFO  [auth-service] Connected to session cache at redis-session.cache.prod:6379
+2026-06-26T08:01:10.230Z INFO  [order-service] POST /api/orders - 201 Created (142ms)
+2026-06-26T08:01:25.890Z WARNING [memory-monitor] Heap usage at 82% - threshold exceeded (80%)
+2026-06-26T08:02:00.005Z INFO  [catalog-service] GET /api/products/search?q=shoes - 200 OK (22ms)
+2026-06-26T08:02:15.654Z ERROR [database-pool] Connection refused: db-primary.db.internal:5432 - Max connections (100) reached
+2026-06-26T08:02:16.100Z WARNING [database-pool] Retrying connection in 500ms... (Attempt 1 of 5)
+2026-06-26T08:02:18.420Z ERROR [database-pool] Connection refused: db-primary.db.internal:5432 - Timeout waiting for connection from pool
+2026-06-26T08:02:20.120Z ERROR [order-service] Failed to persist transaction: connection timeout on query SELECT * FROM cart WHERE user_id = 98451
+2026-06-26T08:02:35.000Z WARNING [payment-service] External payment gateway response time exceeded 8000ms (threshold: 3000ms)
+2026-06-26T08:02:43.111Z ERROR [payment-service] Connection reset by peer: payment-gateway.external.com:443 - SSL Handshake timed out
+2026-06-26T08:03:00.000Z CRITICAL [memory-monitor] Out of memory: Java heap space - failed to allocate 512MB for index caching
+2026-06-26T08:03:01.050Z CRITICAL [system-supervisor] JVM performing emergency garbage collection - GC overhead limit exceeded
+2026-06-26T08:03:10.230Z ERROR [api-gateway] GET /api/orders/checkout - 500 Internal Server Error (30002ms) - OutOfMemoryError
+2026-06-26T08:03:45.000Z WARNING [disk-monitor] Disk usage on /var/log/nginx at 94% - cleanup required immediately
+2026-06-26T08:04:12.789Z ERROR [cache-client] Redis connection failed: ECONNREFUSED 127.0.0.1:6379 - cache unavailable
+2026-06-26T08:04:13.000Z WARNING [order-service] Falling back to database read for product catalog (expect latency increase)
+2026-06-26T08:05:00.000Z CRITICAL [database-pool] Database deadlock detected on table 'inventory' - transaction #TX-4831 rolled back
+2026-06-26T08:05:01.234Z ERROR [inventory-service] Deadlock retry count exceeded - inventory lock release failed
+2026-06-26T08:05:15.567Z WARNING [rate-limiter] Rate limit exceeded for IP 185.220.101.4 - 429 Too Many Requests on /api/login
+2026-06-26T08:06:00.120Z INFO  [health-check] Health check failed for catalog-service, status: UNHEALTHY
+2026-06-26T08:06:30.980Z ERROR [dns-resolver] DNS resolution failed for billing-service.internal - NXDOMAIN
+2026-06-26T08:07:00.111Z WARNING [memory-monitor] GC pause time exceeded threshold: 1200ms (limit: 500ms)
+2026-06-26T08:07:30.450Z INFO  [health-check] Catalog-service restarted by supervisor - status: HEALTHY

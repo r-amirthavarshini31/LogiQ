@@ -1,0 +1,37 @@
+2024-03-15T08:23:01.234Z INFO  [main] Application started successfully
+2024-03-15T08:23:02.100Z INFO  [config] Loaded configuration from /etc/app/config.yaml
+2024-03-15T08:23:03.456Z INFO  [db] Connected to PostgreSQL at db.prod.internal:5432
+2024-03-15T08:23:15.789Z INFO  [http] Server listening on port 8080
+2024-03-15T08:24:00.000Z INFO  [auth] User john.doe@example.com logged in successfully
+2024-03-15T08:24:30.123Z WARNING [memory] Heap usage at 78% - approaching threshold
+2024-03-15T08:25:01.000Z INFO  [api] GET /api/users - 200 OK (45ms)
+2024-03-15T08:25:15.234Z INFO  [api] POST /api/orders - 201 Created (120ms)
+2024-03-15T08:26:00.567Z ERROR [db] Connection refused to replica db-replica-02.prod.internal:5432 - max retries exceeded
+2024-03-15T08:26:01.000Z ERROR [db] Query timeout after 30000ms: SELECT * FROM orders WHERE status = 'pending' JOIN customers ON orders.customer_id = customers.id
+2024-03-15T08:26:02.345Z WARNING [pool] Database connection pool exhausted (50/50 connections in use)
+2024-03-15T08:26:30.000Z ERROR [auth] Authentication failed for user admin@example.com - invalid token: JWT signature verification failed
+2024-03-15T08:26:31.234Z WARNING [auth] Repeated authentication failures detected from IP 192.168.1.100 (5 attempts in 60s)
+2024-03-15T08:27:00.000Z CRITICAL [memory] Out of memory: Java heap space - unable to allocate 256MB for object array
+2024-03-15T08:27:00.500Z CRITICAL [memory] JVM performing emergency garbage collection
+2024-03-15T08:27:01.000Z ERROR [api] GET /api/reports/analytics - 500 Internal Server Error (30002ms) - java.lang.OutOfMemoryError
+2024-03-15T08:27:30.000Z WARNING [disk] Disk usage on /var/log at 92% - cleanup recommended
+2024-03-15T08:27:45.123Z ERROR [network] Connection reset by peer: socket write error to payment-gateway.external.com:443
+2024-03-15T08:28:00.000Z ERROR [network] SSL handshake failed with certificate-authority.com - certificate has expired
+2024-03-15T08:28:15.000Z INFO  [scheduler] Running scheduled job: cleanup_temp_files
+2024-03-15T08:28:30.456Z ERROR [fs] Permission denied: unable to write to /var/log/app/audit.log - check file ownership
+2024-03-15T08:29:00.000Z WARNING [api] Slow query detected: GET /api/dashboard/metrics took 8500ms (threshold: 5000ms)
+2024-03-15T08:29:15.789Z ERROR [timeout] Request to microservice user-service timed out after 15000ms
+2024-03-15T08:29:30.000Z INFO  [deploy] Deployment v2.4.1 rolling update in progress (3/10 pods ready)
+2024-03-15T08:30:00.000Z CRITICAL [db] Database deadlock detected on table 'transactions' - rolling back transaction #TX-9842
+2024-03-15T08:30:01.000Z ERROR [db] Deadlock retry failed after 3 attempts - transaction #TX-9842 aborted
+2024-03-15T08:30:15.234Z WARNING [rate] Rate limit exceeded for API key ak_prod_xxx - 429 Too Many Requests
+2024-03-15T08:30:30.000Z ERROR [auth] Unauthorized access attempt to /admin/config from IP 10.0.0.55 - insufficient permissions
+2024-03-15T08:31:00.000Z INFO  [health] Health check passed: all services operational
+2024-03-15T08:31:30.456Z ERROR [cache] Redis connection failed: ECONNREFUSED 127.0.0.1:6379 - cache miss falling back to database
+2024-03-15T08:32:00.000Z WARNING [memory] GC pause time exceeded threshold: 850ms (limit: 500ms)
+2024-03-15T08:32:30.789Z INFO  [api] GET /api/health - 200 OK (2ms)
+2024-03-15T08:33:00.000Z ERROR [network] DNS resolution failed for analytics-service.internal - NXDOMAIN
+2024-03-15T08:33:30.123Z WARNING [security] Potential SQL injection attempt detected in parameter 'search': "'; DROP TABLE users; --"
+2024-03-15T08:34:00.000Z INFO  [backup] Database backup completed successfully (2.3GB in 340s)
+2024-03-15T08:34:30.456Z ERROR [api] NullPointerException in OrderService.processPayment(OrderService.java:142) - customer.getAddress() returned null
+2024-03-15T08:35:00.000Z CRITICAL [system] Kernel panic: unable to mount root filesystem - disk I/O error on /dev/sda1

@@ -1,0 +1,335 @@
+{% extends "base.html" %}
+
+{% block title %}Profile & Settings — LogiQ{% endblock %}
+
+{% block extra_css %}
+<style>
+.profile-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: var(--space-xl);
+    padding-top: var(--space-xl);
+    padding-bottom: var(--space-3xl);
+}
+
+.profile-card {
+    text-align: center;
+    padding: var(--space-xl);
+    height: fit-content;
+}
+
+.profile-avatar-large {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: var(--color-lavender);
+    color: var(--color-primary);
+    font-size: var(--font-size-3xl);
+    font-weight: 800;
+    margin: 0 auto var(--space-md) auto;
+    box-shadow: var(--shadow-clay);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-name {
+    font-size: var(--font-size-xl);
+    font-weight: 800;
+    margin-bottom: var(--space-xs);
+}
+
+.profile-role {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    font-weight: 600;
+    margin-bottom: var(--space-lg);
+}
+
+.profile-details-list {
+    list-style: none;
+    text-align: left;
+    border-top: 1px solid var(--color-border-soft);
+    padding-top: var(--space-md);
+    margin-bottom: var(--space-lg);
+}
+
+.profile-detail-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--font-size-xs);
+    margin-bottom: var(--space-sm);
+}
+
+.profile-detail-label {
+    color: var(--color-text-muted);
+}
+
+.profile-detail-value {
+    font-weight: 600;
+}
+
+.stats-card-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
+}
+
+.profile-tab-content {
+    display: none;
+}
+
+.profile-tab-content.active {
+    display: block;
+}
+
+.profile-tabs-header {
+    display: flex;
+    gap: var(--space-md);
+    margin-bottom: var(--space-lg);
+    border-bottom: 2px solid var(--color-border-soft);
+    padding-bottom: var(--space-xs);
+}
+
+.profile-tab-btn {
+    font-size: var(--font-size-sm);
+    font-weight: 700;
+    color: var(--color-text-muted);
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -6px;
+    transition: all var(--transition-fast);
+}
+
+.profile-tab-btn.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+}
+
+.sessions-table-wrapper {
+    overflow-x: auto;
+}
+
+.sessions-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.sessions-table th, .sessions-table td {
+    padding: var(--space-md);
+    font-size: var(--font-size-sm);
+    border-bottom: 1px solid var(--color-border-soft);
+}
+
+.sessions-table th {
+    font-weight: 700;
+    color: var(--color-text-secondary);
+}
+
+.chart-wrapper {
+    max-width: 320px;
+    margin: 0 auto;
+}
+
+@media (max-width: 992px) {
+    .profile-grid {
+        grid-template-columns: 1fr;
+    }
+    .stats-card-row {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+<!-- Chart.js for profile statistics -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="profile-grid">
+        <!-- Sidebar Profile Details -->
+        <div class="clay-card profile-card animate-slide-up delay-1">
+            <div class="profile-avatar-large" id="profile-avatar">D</div>
+            <h2 class="profile-name" id="profile-name-display">DevOps Dan</h2>
+            <div class="profile-role" id="profile-role-display">SRE Analyst</div>
+            
+            <ul class="profile-details-list">
+                <li class="profile-detail-item">
+                    <span class="profile-detail-label">Email:</span>
+                    <span class="profile-detail-value" id="profile-email-display">dan@company.com</span>
+                </li>
+                <li class="profile-detail-item">
+                    <span class="profile-detail-label">Account status:</span>
+                    <span class="profile-detail-value" style="color: var(--color-success-dark)">Active</span>
+                </li>
+                <li class="profile-detail-item">
+                    <span class="profile-detail-label">API Plan:</span>
+                    <span class="profile-detail-value">Enterprise Tier</span>
+                </li>
+            </ul>
+
+            <button class="clay-btn clay-btn-ghost" id="btn-logout" style="width: 100%;">
+                <i data-lucide="log-out" width="16" height="16"></i>
+                Sign Out
+            </button>
+        </div>
+
+        <!-- Main Dashboard pane -->
+        <div class="flex-col animate-slide-up delay-2" style="gap: var(--space-lg);">
+            <!-- Tabs Menu -->
+            <div class="profile-tabs-header">
+                <button class="profile-tab-btn active" data-tab="tab-dashboard">Dashboard Overview</button>
+                <button class="profile-tab-btn" data-tab="tab-settings">Profile Settings</button>
+            </div>
+
+            <!-- Tab 1: Dashboard Overview -->
+            <div class="profile-tab-content active" id="tab-dashboard">
+                <!-- Lifetime Stats Grid -->
+                <div class="stats-card-row">
+                    <div class="clay-card-flat" style="display: flex; align-items: center; gap: var(--space-md);">
+                        <div class="feature-icon lavender" style="width: 44px; height: 44px; border-radius: 12px;">
+                            <i data-lucide="database" width="20" height="20"></i>
+                        </div>
+                        <div>
+                            <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary);">Total Lines Analyzed</div>
+                            <div style="font-size: var(--font-size-xl); font-weight: 800;" id="stat-lines">0</div>
+                        </div>
+                    </div>
+
+                    <div class="clay-card-flat" style="display: flex; align-items: center; gap: var(--space-md);">
+                        <div class="feature-icon peach" style="width: 44px; height: 44px; border-radius: 12px;">
+                            <i data-lucide="alert-triangle" width="20" height="20"></i>
+                        </div>
+                        <div>
+                            <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary);">Anomalies Found</div>
+                            <div style="font-size: var(--font-size-xl); font-weight: 800;" id="stat-anomalies">0</div>
+                        </div>
+                    </div>
+
+                    <div class="clay-card-flat" style="display: flex; align-items: center; gap: var(--space-md);">
+                        <div class="feature-icon mint" style="width: 44px; height: 44px; border-radius: 12px;">
+                            <i data-lucide="shield-check" width="20" height="20"></i>
+                        </div>
+                        <div>
+                            <div style="font-size: var(--font-size-xs); color: var(--color-text-secondary);">Resolved Rate</div>
+                            <div style="font-size: var(--font-size-xl); font-weight: 800;" id="stat-resolved">0%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Diagnostics Analytics and History -->
+                <div class="grid grid-2" style="margin-bottom: var(--space-lg); align-items: start;">
+                    <!-- Categories Distribution Chart -->
+                    <div class="clay-card">
+                        <h3 style="font-size: var(--font-size-base); margin-bottom: var(--space-md);">Category Distribution</h3>
+                        <div class="chart-wrapper">
+                            <canvas id="categoryChart" width="250" height="250"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Usage Stats Info -->
+                    <div class="clay-card">
+                        <h3 style="font-size: var(--font-size-base); margin-bottom: var(--space-md);">System Caching Health</h3>
+                        <div class="flex-col" style="gap: var(--space-md);">
+                            <div style="display:flex; justify-content:space-between; border-bottom: 1px solid var(--color-border-soft); padding-bottom: var(--space-sm);">
+                                <span style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">Explanation Cache hits:</span>
+                                <span style="font-weight: 700; color: var(--color-primary)" id="stat-cache-hits">94.2%</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; border-bottom: 1px solid var(--color-border-soft); padding-bottom: var(--space-sm);">
+                                <span style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">AI Engine response speed:</span>
+                                <span style="font-weight: 700;">&lt; 0.9s</span>
+                            </div>
+                            <div style="display:flex; justify-content:space-between; border-bottom: 1px solid var(--color-border-soft); padding-bottom: var(--space-sm);">
+                                <span style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">Lifetime Saved API Cost:</span>
+                                <span style="font-weight: 700; color: var(--color-success-dark);">$142.50</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Sessions Table -->
+                <div class="clay-card">
+                    <h3 style="font-size: var(--font-size-base); margin-bottom: var(--space-md);">Recent Analysis Sessions</h3>
+                    <div class="sessions-table-wrapper">
+                        <table class="sessions-table">
+                            <thead>
+                                <tr>
+                                    <th>Log Filename</th>
+                                    <th>Anomalies</th>
+                                    <th>Resolved</th>
+                                    <th>Analyzed Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sessions-table-body">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; color: var(--color-text-muted);">Loading session history...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tab 2: Profile Settings -->
+            <div class="profile-tab-content" id="tab-settings">
+                <div class="clay-card">
+                    <h3 style="font-size: var(--font-size-lg); margin-bottom: var(--space-lg); border-bottom: 1px solid var(--color-border-soft); padding-bottom: var(--space-sm);">Profile Configurations</h3>
+                    
+                    <form id="settings-profile-form">
+                        <div class="grid grid-2" style="margin-bottom: var(--space-md);">
+                            <div class="form-group">
+                                <label class="form-label">Full Name</label>
+                                <input class="clay-input" type="text" id="settings-username" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Work Email</label>
+                                <input class="clay-input" type="email" id="settings-email" required>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: var(--space-md);">
+                            <label class="form-label">Team Role</label>
+                            <select class="clay-input clay-select" id="settings-role" required>
+                                <option value="DevOps Engineer">DevOps Engineer</option>
+                                <option value="SRE Analyst">SRE Analyst</option>
+                                <option value="Security Auditor">Security Auditor</option>
+                                <option value="Platform Engineer">Platform Engineer</option>
+                                <option value="Fullstack Developer">Fullstack Developer</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: var(--space-lg);">
+                            <label class="form-label">API Key Tokens</label>
+                            <div class="flex gap-sm">
+                                <input class="clay-input" type="text" id="settings-apikey" readonly style="background: var(--color-bg); font-family: monospace; font-size: var(--font-size-xs);">
+                                <button type="button" class="clay-btn clay-btn-ghost clay-btn-sm" id="btn-rotate-key" style="border-radius: 8px;">Rotate</button>
+                            </div>
+                            <div class="form-helper">Use this key to upload log files programmatically via API pipelines.</div>
+                        </div>
+
+                        <h3 style="font-size: var(--font-size-base); margin-bottom: var(--space-md); color: var(--color-error-dark);">Alerting Webhooks</h3>
+                        <div class="form-group" style="margin-bottom: var(--space-md);">
+                            <label class="form-label">Slack Webhook URL</label>
+                            <input class="clay-input" type="url" id="settings-slack" placeholder="https://hooks.slack.com/services/...">
+                        </div>
+                        <div class="form-group" style="margin-bottom: var(--space-xl);">
+                            <label class="form-label">Discord Webhook URL</label>
+                            <input class="clay-input" type="url" id="settings-discord" placeholder="https://discord.com/api/webhooks/...">
+                        </div>
+
+                        <div class="flex gap-md" style="justify-content: flex-end;">
+                            <button type="button" class="clay-btn clay-btn-error" id="btn-purge-db">Purge History</button>
+                            <button type="submit" class="clay-btn clay-btn-primary">Save Settings</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
+{% endblock %}

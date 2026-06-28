@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}About LogiQ — Observability Simplified{% endblock %}
+
+{% block extra_css %}
+<style>
+.about-hero {
+    text-align: center;
+    padding: var(--space-2xl) 0 var(--space-xl) 0;
+}
+
+.about-title {
+    font-size: var(--font-size-4xl);
+    font-weight: 800;
+    margin-bottom: var(--space-sm);
+}
+
+.about-tagline {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2xl);
+    align-items: center;
+    margin-top: var(--space-xl);
+    margin-bottom: var(--space-3xl);
+}
+
+.about-image-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--space-3xl);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-clay);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border-soft);
+}
+
+.about-details h2 {
+    font-size: var(--font-size-2xl);
+    margin-bottom: var(--space-md);
+}
+
+.about-details p {
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--space-lg);
+}
+
+.feature-pill-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+}
+
+.feature-pill {
+    padding: 8px 16px;
+    border-radius: var(--radius-pill);
+    background: var(--color-lavender);
+    color: var(--color-primary);
+    font-size: var(--font-size-xs);
+    font-weight: 700;
+    box-shadow: var(--shadow-clay-small);
+}
+
+.pillar-section {
+    padding: var(--space-2xl) 0;
+    border-top: 1px solid var(--color-border-soft);
+}
+
+.pillar-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xl);
+    margin-top: var(--space-xl);
+}
+
+.pillar-card {
+    text-align: center;
+    padding: var(--space-xl);
+}
+
+.pillar-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 16px;
+    background: var(--color-lavender);
+    color: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto var(--space-md) auto;
+    box-shadow: var(--shadow-clay-small);
+}
+
+@media (max-width: 768px) {
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+    .pillar-grid {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <!-- Hero Section -->
+    <div class="about-hero animate-fade-in">
+        <h1 class="about-title">About Logi<span class="text-gradient">Q</span></h1>
+        <p class="about-tagline">Log File Anomaly Explainer with Self-Healing Layer. We help engineering teams turn logs into solutions.</p>
+    </div>
+
+    <!-- Core Intro Grid -->
+    <div class="about-grid">
+        <div class="about-details animate-slide-up delay-1">
+            <h2>From Chaos to Clarity</h2>
+            <p>Modern applications generate millions of lines of telemetry logs daily. When an incident or outage strikes, finding the root cause is like searching for a needle in a haystack. DevOps developers and SREs waste hours formatting, sorting, and diagnosing raw log dump files.</p>
+            <p>LogiQ changes that. Our platform instantly ingests files, structures log fields, groups warning spikes, and invokes AI to draft action explanations and remediation code fixes immediately.</p>
+            
+            <div class="feature-pill-grid">
+                <span class="feature-pill">Claymorphism UI</span>
+                <span class="feature-pill">AI Explanations</span>
+                <span class="feature-pill">SQLite Caching</span>
+                <span class="feature-pill">GitHub Self-Healing</span>
+                <span class="feature-pill">Slack Alerts</span>
+            </div>
+        </div>
+
+        <div class="about-image-card animate-slide-up delay-2">
+            <img src="{{ url_for('static', filename='illustrations/ai-explainer.svg') }}" alt="AI Explainer Diagnostics" width="300" height="300" class="animate-float">
+        </div>
+    </div>
+
+    <!-- Architecture Pillars -->
+    <div class="pillar-section">
+        <div style="text-align: center;">
+            <h2 class="animate-fade-in">The Three Architectural Pillars</h2>
+            <p class="animate-fade-in delay-1" style="color: var(--color-text-secondary); max-width: 500px; margin: var(--space-xs) auto 0 auto;">How LogiQ delivers speed, efficiency, and intelligence at scale.</p>
+        </div>
+
+        <div class="pillar-grid">
+            <!-- Pillar 1 -->
+            <div class="clay-card pillar-card animate-slide-up delay-1">
+                <div class="pillar-icon" style="background: var(--color-sky); color: var(--color-warning-dark);">
+                    <i data-lucide="scan-search" width="24" height="24"></i>
+                </div>
+                <h3>1. Ingest & Detect</h3>
+                <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-top: var(--space-sm); line-height: 1.6;">
+                    LogiQ structures Apache/Nginx, syslog, and custom text formats using keyword dictionaries and frequency spikes monitoring.
+                </p>
+            </div>
+
+            <!-- Pillar 2 -->
+            <div class="clay-card pillar-card animate-slide-up delay-2">
+                <div class="pillar-icon" style="background: var(--color-mint); color: var(--color-success-dark);">
+                    <i data-lucide="brain" width="24" height="24"></i>
+                </div>
+                <h3>2. Cached AI Diagnostic</h3>
+                <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-top: var(--space-sm); line-height: 1.6;">
+                    Anomalies are explained using OpenAI or local Ollama engines. Duplicate errors hit our SQLite cache to lower API costs.
+                </p>
+            </div>
+
+            <!-- Pillar 3 -->
+            <div class="clay-card pillar-card animate-slide-up delay-3">
+                <div class="pillar-icon" style="background: var(--color-peach); color: var(--color-error-dark);">
+                    <i data-lucide="wrench" width="24" height="24"></i>
+                </div>
+                <h3>3. Self-Healing Remediate</h3>
+                <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-top: var(--space-sm); line-height: 1.6;">
+                    LogiQ goes beyond diagnostics by executing automated Slack alerts, drafting runbooks, and opening GitHub pull request patches.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

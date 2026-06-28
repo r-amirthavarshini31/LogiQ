@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+<div class="container" style="padding-top: var(--space-xl); padding-bottom: var(--space-3xl);">
+    <div class="settings-grid" style="display: grid; grid-template-columns: 1fr 340px; gap: var(--space-2xl); align-items: start;">
+        <!-- Left Pane: Configurations Forms -->
+        <div style="display: flex; flex-direction: column; gap: var(--space-lg);">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1 class="page-title animate-fade-in">Settings</h1>
+                <p class="page-subtitle animate-fade-in delay-1">Configure integrations and preferences</p>
+            </div>
+
+            <!-- Error Banner -->
+            <div class="error-banner" id="settings-error">
+                <i data-lucide="alert-circle" width="20" height="20"></i>
+                <span id="settings-error-message">An error occurred</span>
+            </div>
+
+            <!-- AI Provider Section -->
+            <div class="clay-card settings-section animate-slide-up delay-1" id="section-ai">
+                <h3 class="settings-section-title">
+                    <i data-lucide="brain" width="24" height="24" style="color: var(--color-primary);"></i>
+                    AI Provider
+                </h3>
+
+                <div class="settings-row">
+                    <div class="settings-field">
+                        <label class="settings-field-label" for="setting-openai-key">OpenAI API Key</label>
+                        <input type="password" class="clay-input" id="setting-openai-key" placeholder="sk-...">
+                        <span class="settings-field-hint">Used for generating anomaly explanations and runbooks</span>
+                    </div>
+                    <label class="clay-toggle" id="toggle-openai">
+                        <input type="checkbox" id="setting-openai-enabled">
+                        <div class="clay-toggle-track"></div>
+                        <div class="clay-toggle-thumb"></div>
+                    </label>
+                </div>
+
+                <div class="settings-row">
+                    <div class="settings-field">
+                        <label class="settings-field-label" for="setting-ollama-endpoint">Ollama Endpoint URL</label>
+                        <input type="url" class="clay-input" id="setting-ollama-endpoint" placeholder="http://localhost:11434">
+                        <span class="settings-field-hint">Local LLM alternative — no API key required</span>
+                    </div>
+                    <label class="clay-toggle" id="toggle-ollama">
+                        <input type="checkbox" id="setting-ollama-enabled">
+                        <div class="clay-toggle-track"></div>
+                        <div class="clay-toggle-thumb"></div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Notifications Section -->
+            <div class="clay-card settings-section animate-slide-up delay-2" id="section-notifications">
+                <h3 class="settings-section-title">
+                    <i data-lucide="bell" width="24" height="24" style="color: var(--color-primary);"></i>
+                    Notifications
+                </h3>
+
+                <div class="settings-row">
+                    <div class="settings-field">
+                        <label class="settings-field-label" for="setting-slack-webhook">Slack Webhook URL</label>
+                        <input type="url" class="clay-input" id="setting-slack-webhook" placeholder="https://hooks.slack.com/services/...">
+                        <span class="settings-field-hint">Send anomaly alerts to a Slack channel</span>
+                    </div>
+                    <label class="clay-toggle" id="toggle-slack">
+                        <input type="checkbox" id="setting-slack-enabled">
+                        <div class="clay-toggle-track"></div>
+                        <div class="clay-toggle-thumb"></div>
+                    </label>
+                </div>
+
+                <div class="settings-row">
+                    <div class="settings-field">
+                        <label class="settings-field-label" for="setting-discord-webhook">Discord Webhook URL</label>
+                        <input type="url" class="clay-input" id="setting-discord-webhook" placeholder="https://discord.com/api/webhooks/...">
+                        <span class="settings-field-hint">Send anomaly alerts to a Discord channel</span>
+                    </div>
+                    <label class="clay-toggle" id="toggle-discord">
+                        <input type="checkbox" id="setting-discord-enabled">
+                        <div class="clay-toggle-track"></div>
+                        <div class="clay-toggle-thumb"></div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- GitHub Section -->
+            <div class="clay-card settings-section animate-slide-up delay-3" id="section-github">
+                <h3 class="settings-section-title">
+                    <i data-lucide="git-pull-request" width="24" height="24" style="color: var(--color-primary);"></i>
+                    GitHub Integration
+                </h3>
+
+                <div class="settings-row">
+                    <div class="settings-field">
+                        <label class="settings-field-label" for="setting-github-token">GitHub Personal Access Token</label>
+                        <input type="password" class="clay-input" id="setting-github-token" placeholder="ghp_...">
+                        <span class="settings-field-hint">Required for creating auto-fix pull requests</span>
+                    </div>
+                    <label class="clay-toggle" id="toggle-github">
+                        <input type="checkbox" id="setting-github-enabled">
+                        <div class="clay-toggle-track"></div>
+                        <div class="clay-toggle-thumb"></div>
+                    </label>
+                </div>
+
+                <div class="settings-row">
+                    <div class="settings-field">
+                        <label class="settings-field-label" for="setting-github-repo">Target Repository</label>
+                        <input type="text" class="clay-input" id="setting-github-repo" placeholder="owner/repository">
+                        <span class="settings-field-hint">The repository where fix PRs will be created</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Twilio Section -->
+            <div class="clay-card settings-section animate-slide-up delay-4" id="section-twilio">
+                <h3 class="settings-section-title">
+                    <i data-lucide="phone" width="24" height="24" style="color: var(--color-primary);"></i>
+                    Twilio (SMS Alerts)
+                </h3>
+
+                <div class="settings-row">
+                    <div class="settings-field">
+                        <label class="settings-field-label" for="setting-twilio-sid">Account SID</label>
+                        <input type="text" class="clay-input" id="setting-twilio-sid" placeholder="AC...">
+                    </div>
+                    <label class="clay-toggle" id="toggle-twilio">
+                        <input type="checkbox" id="setting-twilio-enabled">
+                        <div class="clay-toggle-track"></div>
+                        <div class="clay-toggle-thumb"></div>
+                    </label>
+                </div>
+
+                <div class="settings-row">
+                    <div class="settings-field">
+                        <label class="settings-field-label" for="setting-twilio-token">Auth Token</label>
+                        <input type="password" class="clay-input" id="setting-twilio-token" placeholder="Auth token">
+                    </div>
+                </div>
+
+                <div class="settings-row">
+                    <div class="settings-field" style="flex: 1;">
+                        <label class="settings-field-label" for="setting-twilio-from">From Number</label>
+                        <input type="tel" class="clay-input" id="setting-twilio-from" placeholder="+1234567890">
+                    </div>
+                    <div class="settings-field" style="flex: 1;">
+                        <label class="settings-field-label" for="setting-twilio-to">To Number</label>
+                        <input type="tel" class="clay-input" id="setting-twilio-to" placeholder="+1234567890">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Save Button -->
+            <div class="flex-center" style="margin-top: var(--space-xl);">
+                <button class="clay-btn clay-btn-primary clay-btn-lg" id="btn-save-settings">
+                    <i data-lucide="save" width="20" height="20"></i>
+                    Save Settings
+                </button>
+            </div>
+        </div>
+
+        <!-- Right Pane: Side Graphic -->
+        <div class="settings-graphic-pane hide-mobile" style="position: sticky; top: 100px; text-align: center;">
+            <div class="clay-card-flat" style="padding: var(--space-lg); display: flex; flex-direction: column; align-items: center;">
+                <img src="{{ url_for('static', filename='illustrations/system-settings.svg') }}" alt="System Settings illustration" style="width: 100%; max-width: 250px; height: auto;" class="animate-float">
+                <h4 style="margin-top: var(--space-md); margin-bottom: var(--space-xs); font-size: var(--font-size-base);">Setup System Tunings</h4>
+                <p style="font-size: var(--font-size-xs); color: var(--color-text-muted); line-height: 1.5;">Customize alert notification thresholds, credentials secrets, and configure backup API routes.</p>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/settings.js') }}"></script>
+{% endblock %}

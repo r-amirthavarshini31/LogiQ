@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <filter id="clay-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="3" dy="5" stdDeviation="5" flood-color="#1E1B3A" flood-opacity="0.1"/>
+    </filter>
+    <filter id="c-inset" x="-10%" y="-10%" width="120%" height="120%">
+      <feOffset dx="1" dy="2"/>
+      <feGaussianBlur stdDeviation="1" result="offset-blur"/>
+      <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse"/>
+      <feFlood flood-color="white" flood-opacity="0.6" result="color"/>
+      <feComposite operator="in" in="color" in2="inverse" result="shadow"/>
+      <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+
+  <circle cx="200" cy="200" r="160" fill="#E0F2FE" opacity="0.4"/>
+  <circle cx="200" cy="200" r="120" fill="#FEE2E2" opacity="0.5"/>
+
+  <!-- User Account Card (Puffy Clay) -->
+  <g filter="url(#clay-shadow)" transform="translate(100, 100)">
+    <rect x="0" y="0" width="200" height="200" rx="30" fill="#FFFFFF"/>
+    <rect x="0" y="0" width="200" height="200" rx="30" fill="none" stroke="#FFFFFF" stroke-width="4" filter="url(#c-inset)"/>
+    <rect x="0" y="0" width="200" height="200" rx="30" fill="none" stroke="#6B6890" stroke-width="1" opacity="0.08"/>
+
+    <!-- Avatar circle -->
+    <circle cx="100" cy="75" r="40" fill="#E8E0F0" filter="url(#c-inset)"/>
+    <!-- User Body -->
+    <path d="M70,140 C70,115 80,105 100,105 C120,105 130,115 130,140 Z" fill="#818CF8" />
+
+    <!-- Name Placeholder fields -->
+    <rect x="50" y="145" width="100" height="8" rx="4" fill="#E8E0F0"/>
+    <rect x="70" y="160" width="60" height="6" rx="3" fill="#E8E0F0"/>
+  </g>
+
+  <!-- Giant Security Key (Floating) -->
+  <g filter="url(#clay-shadow)" transform="translate(220, 200)">
+    <circle cx="25" cy="25" r="20" fill="#6EE7B7" />
+    <circle cx="25" cy="25" r="20" fill="none" stroke="#FFFFFF" stroke-width="2.5" filter="url(#c-inset)"/>
+    <circle cx="25" cy="25" r="8" fill="#FFFFFF" />
+    
+    <!-- Key shaft and teeth -->
+    <rect x="42" y="21" width="40" height="8" rx="4" fill="#6EE7B7"/>
+    <rect x="66" y="27" width="8" height="12" rx="3" fill="#6EE7B7"/>
+    <rect x="76" y="27" width="8" height="12" rx="3" fill="#6EE7B7"/>
+  </g>
+</svg>

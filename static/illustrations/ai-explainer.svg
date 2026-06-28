@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <filter id="clay-shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="3" dy="5" stdDeviation="5" flood-color="#1E1B3A" flood-opacity="0.1"/>
+    </filter>
+    <filter id="c-inset" x="-10%" y="-10%" width="120%" height="120%">
+      <feOffset dx="1" dy="2"/>
+      <feGaussianBlur stdDeviation="1" result="offset-blur"/>
+      <feComposite operator="out" in="SourceGraphic" in2="offset-blur" result="inverse"/>
+      <feFlood flood-color="white" flood-opacity="0.6" result="color"/>
+      <feComposite operator="in" in="color" in2="inverse" result="shadow"/>
+      <feComposite operator="over" in="shadow" in2="SourceGraphic"/>
+    </filter>
+  </defs>
+
+  <circle cx="200" cy="200" r="160" fill="#E8E0F0" opacity="0.4"/>
+  <circle cx="200" cy="200" r="120" fill="#FEE2E2" opacity="0.5"/>
+
+  <!-- Puffy Floating Robot Head -->
+  <g filter="url(#clay-shadow)" transform="translate(130, 100)">
+    <rect x="10" y="20" width="120" height="90" rx="36" fill="#FFFFFF"/>
+    <rect x="10" y="20" width="120" height="90" rx="36" fill="none" stroke="#FFFFFF" stroke-width="4" filter="url(#c-inset)"/>
+    <rect x="10" y="20" width="120" height="90" rx="36" fill="none" stroke="#6B6890" stroke-width="1" opacity="0.08"/>
+
+    <!-- Ear Cushions -->
+    <rect x="0" y="45" width="12" height="40" rx="6" fill="#818CF8"/>
+    <rect x="128" y="45" width="12" height="40" rx="6" fill="#818CF8"/>
+
+    <!-- Antennas -->
+    <line x1="70" y1="20" x2="70" y2="5" stroke="#818CF8" stroke-width="4" stroke-linecap="round"/>
+    <circle cx="70" cy="3" r="5" fill="#FCA5A5" />
+
+    <!-- Goggles/Eyes Screen -->
+    <rect x="25" y="40" width="90" height="30" rx="15" fill="#1E1B3A"/>
+    <!-- Glowing eyes -->
+    <circle cx="50" cy="55" r="6" fill="#6EE7B7" />
+    <circle cx="90" cy="55" r="6" fill="#6EE7B7" />
+
+    <!-- Cute Smile -->
+    <path d="M60,85 Q70,95 80,85" fill="none" stroke="#818CF8" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- Diagnosed Log block (Floating on bottom left) -->
+  <g filter="url(#clay-shadow)" transform="translate(60, 210)">
+    <rect x="0" y="0" width="110" height="70" rx="18" fill="#D1FAE5"/>
+    <rect x="0" y="0" width="110" height="70" rx="18" fill="none" stroke="#FFFFFF" stroke-width="3" filter="url(#c-inset)"/>
+    
+    <rect x="15" y="20" width="80" height="6" rx="3" fill="#059669" opacity="0.5"/>
+    <rect x="15" y="32" width="60" height="6" rx="3" fill="#059669" opacity="0.3"/>
+    
+    <!-- Check badge -->
+    <circle cx="85" cy="50" r="10" fill="#10B981"/>
+    <path d="M81 50 l3 3 l5-6" fill="none" stroke="white" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- Sparkles -->
+  <g transform="translate(260, 110)">
+    <path d="M10,0 l2,4 l4,2 l-4,2 l-2,4 l-2-4 l-4-2 l4-2 Z" fill="#FBBF24" filter="url(#clay-shadow)"/>
+  </g>
+</svg>
